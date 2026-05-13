@@ -99,6 +99,22 @@
   background: #166fe5;
 }
 
+.friendsLink {
+  display: block;
+  padding: 11px;
+  background: #e4e6eb;
+  color: #444;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: background 0.15s;
+  text-align: center;
+}
+
+.friendsLink:hover {
+  background: #d8dadf;
+}
+
 .logoutBtn {
   width: 100%;
   padding: 11px;

@@ -1,0 +1,294 @@
+.page {
+  min-height: 100vh;
+  background: #f0f2f5;
+  padding: 32px 16px;
+}
+
+.inner {
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* 헤더 */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.backLink {
+  color: #1877f2;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.backLink:hover {
+  text-decoration: underline;
+}
+
+.pageTitle {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #1c1e21;
+}
+
+/* 공통 카드 */
+.card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  padding: 20px 20px;
+}
+
+/* 검색 영역 */
+.searchTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1c1e21;
+  margin-bottom: 12px;
+}
+
+.searchForm {
+  display: flex;
+  gap: 8px;
+}
+
+.searchInput {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1.5px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  transition: border-color 0.2s;
+  min-width: 0;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #1877f2;
+}
+
+.searchBtn {
+  padding: 10px 18px;
+  background: #1877f2;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.searchBtn:hover:not(:disabled) {
+  background: #166fe5;
+}
+
+.searchBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* 검색 결과 */
+.searchResults {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.searchEmpty {
+  color: #8a8d91;
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 12px 0 4px;
+}
+
+/* 탭 영역 */
+.tabBar {
+  display: flex;
+  border-bottom: 2px solid #e4e6eb;
+  gap: 0;
+}
+
+.tabBtn {
+  flex: 1;
+  padding: 12px 8px;
+  background: none;
+  border: none;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #606770;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: color 0.15s, border-color 0.15s;
+  text-align: center;
+}
+
+.tabBtn:hover {
+  color: #1877f2;
+}
+
+.tabBtnActive {
+  color: #1877f2;
+  border-bottom-color: #1877f2;
+}
+
+/* 탭 본문 */
+.tabContent {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* 공통 에러 */
+.globalError {
+  background: #ffecec;
+  border: 1px solid #f5c6c6;
+  border-radius: 6px;
+  padding: 10px 14px;
+  color: #c0392b;
+  font-size: 0.88rem;
+  text-align: center;
+}
+
+/* 빈 상태 */
+.emptyMsg {
+  color: #8a8d91;
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 20px 0 8px;
+}
+
+/* 로딩 */
+.loadingMsg {
+  color: #8a8d91;
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 20px 0 8px;
+}
+
+/* 친구/신청 row */
+.friendRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: #f0f2f5;
+  border-radius: 8px;
+}
+
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.avatarPlaceholder {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #e4e6eb;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.userInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.userName {
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: #1c1e21;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.userHandle {
+  font-size: 0.82rem;
+  color: #8a8d91;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 액션 버튼 그룹 */
+.btnGroup {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* 기본 버튼 (수락, 친구 신청) */
+.btnPrimary {
+  padding: 7px 14px;
+  background: #1877f2;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+  white-space: nowrap;
+}
+
+.btnPrimary:hover:not(:disabled) {
+  background: #166fe5;
+}
+
+.btnPrimary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* 보조 버튼 (거절, 취소, 친구 끊기) */
+.btnSecondary {
+  padding: 7px 14px;
+  background: #e4e6eb;
+  color: #444;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+  white-space: nowrap;
+}
+
+.btnSecondary:hover:not(:disabled) {
+  background: #d8dadf;
+}
+
+.btnSecondary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* row 아래 인라인 에러 */
+.rowError {
+  font-size: 0.82rem;
+  color: #c0392b;
+  padding: 0 14px 6px;
+  margin-top: -6px;
+}

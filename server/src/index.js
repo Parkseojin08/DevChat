@@ -26,6 +26,7 @@ app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 app.use('/auth', require('./routes/auth'));
 
 // --- friend
+app.use('/friendships', require('./routes/friend'));
 
 // --- feed 
 

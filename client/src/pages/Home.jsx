@@ -37,6 +37,7 @@ export default function Home() {
 
         <div className={styles.actions}>
           <Link to="/me" className={styles.profileLink}>프로필 수정</Link>
+          <Link to="/friends" className={styles.friendsLink}>친구 관리</Link>
           <button className={styles.logoutBtn} onClick={() => logout()}>로그아웃</button>
         </div>
       </div>

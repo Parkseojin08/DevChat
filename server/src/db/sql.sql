@@ -18,6 +18,7 @@ DROP TYPE IF EXISTS notification_type;
 
 DROP INDEX IF EXISTS idx_notifications_user_recent;
 DROP INDEX IF exists idx_notifications_user_unread;
+DROP INDEX IF EXISTS uq_friendship_pair;
 
 create type friend_status as enum ('pending', 'accepted');
 create type room_type_status  as enum ('direct', 'group');
@@ -58,6 +59,12 @@ updated_at      TIMESTAMPTZ NOT NULL DEFAULT NOW() /* 상태 변경 날짜 */
 );
  
  
+CREATE UNIQUE INDEX IF NOT EXISTS uq_friendship_pair
+  ON chatdata.friendships (
+      LEAST(requester_id::text, addressee_id::text),
+      GREATEST(requester_id::text, addressee_id::text)
+  );
+
 -- posts table
 CREATE TABLE IF NOT EXISTS posts (
 id          UUID PRIMARY KEY DEFAULT gen_random_uuid(), /* 게시글 고유 id */

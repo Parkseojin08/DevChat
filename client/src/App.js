@@ -4,6 +4,7 @@ import Signup from './pages/auth/Signup';
 import Login from './pages/auth/Login';
 import Profile from './pages/auth/Profile';
 import Home from './pages/Home';
+import Friends from './pages/Friends';
 
 // 인증 여부 확인 후 보호 라우트 처리
 function PrivateRoute({ children }) {
@@ -51,6 +52,14 @@ function AppRoutes() {
         element={
           <PrivateRoute>
             <Profile />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/friends"
+        element={
+          <PrivateRoute>
+            <Friends />
           </PrivateRoute>
         }
       />
