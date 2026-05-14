@@ -28,7 +28,10 @@ app.use('/auth', require('./routes/auth'));
 // --- friend
 app.use('/friendships', require('./routes/friend'));
 
-// --- feed 
+// --- feed
+app.use('/posts', require('./routes/posts'));
+app.use('/comments', require('./routes/comments'));
+app.use('/feed', require('./routes/feed'));
 
 // --- messenger 
 

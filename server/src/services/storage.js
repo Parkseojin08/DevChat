@@ -7,6 +7,9 @@ const { ValidationError } = require('../errors/AppError');
 // 프로필 이미지가 저장될 절대 경로
 const PROFILE_DIR = path.join(__dirname, '../../uploads/profile');
 
+// 게시글 미디어가 저장될 절대 경로
+const POSTS_DIR = path.join(__dirname, '../../uploads/posts');
+
 // 허용 MIME 타입 → 확장자 맵
 const ALLOWED_MIME = {
     'image/jpeg': 'jpg',
@@ -24,8 +27,15 @@ const ensureProfileDir = () => {
     }
 };
 
+const ensurePostsDir = () => {
+    if (!fs.existsSync(POSTS_DIR)) {
+        fs.mkdirSync(POSTS_DIR, { recursive: true });
+    }
+};
+
 // 모듈 로드 시점에 디렉토리 확인
 ensureProfileDir();
+ensurePostsDir();
 
 /**
  * 프로필 이미지를 디스크에 저장하고 상대 URL을 반환한다.
@@ -54,6 +64,28 @@ exports.saveProfileImage = async (fileBuffer, mimetype) => {
 };
 
 /**
+ * 게시글 미디어를 디스크에 저장하고 상대 URL을 반환한다.
+ */
+exports.savePostMedia = async (fileBuffer, mimetype) => {
+    const ext = ALLOWED_MIME[mimetype];
+    if (!ext) {
+        throw new ValidationError(
+            'INVALID_FILE',
+            '허용되지 않는 파일 형식입니다. jpg, png, webp만 업로드 가능합니다.'
+        );
+    }
+
+    ensurePostsDir();
+
+    const filename = `${crypto.randomUUID()}.${ext}`;
+    const filepath = path.join(POSTS_DIR, filename);
+
+    await fsp.writeFile(filepath, fileBuffer);
+
+    return `/uploads/posts/${filename}`;
+};
+
+/**
  * 상대 URL로 저장된 프로필 이미지 파일을 삭제한다.
  * 파일이 없거나 삭제 실패해도 예외를 전파하지 않는다 (orphan 방어).
  *
@@ -75,6 +107,29 @@ exports.deleteProfileImage = async (relativeUrl) => {
 
     try {
         await fsp.unlink(filepath);
+    } catch {
+        // 파일이 이미 없거나 권한 오류 → 무시
+    }
+};
+
+/**
+ * 게시글 미디어 파일을 디스크에서 삭제한다.
+ * 파일이 없거나 삭제 실패해도 예외를 전파하지 않는다 (orphan 방어).
+ *
+ * @param {string|null|undefined} relativeUrl - DB에 저장된 상대 URL
+ */
+exports.deletePostMedia = async (relativeUrl) => {
+    if (!relativeUrl) return;
+
+    const PREFIX = '/uploads/posts/';
+    if (!relativeUrl.startsWith(PREFIX)) return;
+
+    const filename = relativeUrl.slice(PREFIX.length);
+
+    if (filename.includes('/') || filename.includes('\\') || filename.includes('..')) return;
+
+    try {
+        await fsp.unlink(path.join(POSTS_DIR, filename));
     } catch {
         // 파일이 이미 없거나 권한 오류 → 무시
     }

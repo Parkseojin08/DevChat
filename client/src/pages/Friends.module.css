@@ -161,6 +161,10 @@
   text-align: center;
 }
 
+.searchError {
+  margin-top: 10px;
+}
+
 /* 빈 상태 */
 .emptyMsg {
   color: #8a8d91;

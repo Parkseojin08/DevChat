@@ -33,7 +33,7 @@ exports.sendRequest = async ({ requesterId, addresseeId }) => {
     const existing = await friendshipRepo.findRelation(requesterId, addresseeId);
     if (existing) {
         if (existing.status === 'accepted') {
-            throw new ConflictError('ALREADY_FRIEND', '이미 친구입니다.');
+            throw new ConflictError('ALREADY_FRIENDS', '이미 친구입니다.');
         }
         // pending — 방향 무관하게 이미 신청 존재로 처리
         throw new ConflictError('REQUEST_PENDING', '이미 신청을 보냈습니다.');

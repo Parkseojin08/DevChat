@@ -1,46 +1,42 @@
+/* ===== 페이지 레이아웃 ===== */
 .page {
   min-height: 100vh;
+  background: #f0f2f5;
   display: flex;
-  align-items: center;
   justify-content: center;
+  gap: 24px;
   padding: 24px 16px;
+  box-sizing: border-box;
+  align-items: flex-start;
 }
 
-.card {
+/* ===== 왼쪽 사이드바 ===== */
+.sidebar {
+  width: 260px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 24px;
+}
+
+.sidebarCard {
   background: #fff;
   border-radius: 8px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-  padding: 32px 28px;
-  width: 100%;
-  max-width: 400px;
-  text-align: center;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  padding: 18px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
-.title {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: #1877f2;
-  margin-bottom: 8px;
-}
-
-.welcome {
-  color: #606770;
-  font-size: 1rem;
-  margin-bottom: 24px;
-}
-
-.userInfo {
+.sidebarUserRow {
   display: flex;
   align-items: center;
-  gap: 14px;
-  background: #f0f2f5;
-  border-radius: 8px;
-  padding: 14px 16px;
-  margin-bottom: 24px;
-  text-align: left;
+  gap: 12px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #e4e6eb;
 }
 
-.avatar {
+.sidebarAvatar {
   width: 52px;
   height: 52px;
   border-radius: 50%;
@@ -48,7 +44,7 @@
   flex-shrink: 0;
 }
 
-.avatarPlaceholder {
+.sidebarAvatarPlaceholder {
   width: 52px;
   height: 52px;
   border-radius: 50%;
@@ -60,74 +56,184 @@
   justify-content: center;
 }
 
-.userDetails {
+.sidebarUserInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.sidebarName {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1c1e21;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebarHandle {
+  font-size: 0.82rem;
+  color: #8a8d91;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ===== 사이드바 내비게이션 ===== */
+.sidebarNav {
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
 
-.userName {
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 0.92rem;
   font-weight: 600;
-  font-size: 0.95rem;
   color: #1c1e21;
+  text-decoration: none;
+  transition: background 0.12s;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  box-sizing: border-box;
 }
 
-.userHandle {
-  font-size: 0.85rem;
-  color: #8a8d91;
+.navItem:hover {
+  background: #f0f2f5;
+  color: #1877f2;
 }
 
-.actions {
+.navItemBtn {
+  font-family: inherit;
+}
+
+.navIcon {
+  font-size: 1rem;
+  width: 20px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+/* ===== 중앙 피드 ===== */
+.feed {
+  width: 100%;
+  max-width: 590px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+/* ===== 에러 박스 ===== */
+.errorBox {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  padding: 20px 24px;
+  text-align: center;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  align-items: center;
 }
 
-.profileLink {
-  display: block;
-  padding: 11px;
+.errorBox p {
+  font-size: 0.9rem;
+  color: #c0392b;
+}
+
+.retryBtn {
+  padding: 8px 18px;
   background: #1877f2;
   color: #fff;
+  border: none;
   border-radius: 6px;
-  font-size: 0.95rem;
+  font-size: 0.88rem;
   font-weight: 700;
+  cursor: pointer;
   transition: background 0.15s;
-  text-align: center;
 }
 
-.profileLink:hover {
+.retryBtn:hover {
   background: #166fe5;
 }
 
-.friendsLink {
-  display: block;
-  padding: 11px;
-  background: #e4e6eb;
-  color: #444;
-  border-radius: 6px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  transition: background 0.15s;
+/* ===== 빈 상태 ===== */
+.emptyBox {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  padding: 40px 24px;
   text-align: center;
 }
 
-.friendsLink:hover {
-  background: #d8dadf;
+.emptyText {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1c1e21;
+  margin-bottom: 6px;
 }
 
-.logoutBtn {
-  width: 100%;
-  padding: 11px;
-  background: #e4e6eb;
-  color: #444;
-  border-radius: 6px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  transition: background 0.15s;
-  cursor: pointer;
-  border: none;
+.emptySubText {
+  font-size: 0.88rem;
+  color: #8a8d91;
 }
 
-.logoutBtn:hover {
-  background: #d8dadf;
+/* ===== 로딩 ===== */
+.loadingBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 24px 0;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #e4e6eb;
+  border-top-color: #1877f2;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loadingText {
+  font-size: 0.88rem;
+  color: #8a8d91;
+}
+
+/* ===== 무한 스크롤 sentinel ===== */
+.sentinel {
+  height: 1px;
+}
+
+/* ===== 마지막 페이지 ===== */
+.endMsg {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #8a8d91;
+  padding: 8px 0 16px;
+}
+
+/* ===== 반응형: 사이드바 숨김 ===== */
+@media (max-width: 800px) {
+  .sidebar {
+    display: none;
+  }
+
+  .feed {
+    max-width: 100%;
+  }
 }

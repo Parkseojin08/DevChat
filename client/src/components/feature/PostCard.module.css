@@ -1,0 +1,302 @@
+.card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* ===== 헤더 ===== */
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 14px 16px 10px;
+}
+
+.authorInfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.avatarPlaceholder {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #e4e6eb;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.authorMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.authorName {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #1c1e21;
+  line-height: 1.3;
+}
+
+.authorHandle {
+  font-size: 0.8rem;
+  color: #8a8d91;
+}
+
+.postTime {
+  font-size: 0.78rem;
+  color: #8a8d91;
+}
+
+/* ===== 메뉴 ===== */
+.menuWrapper {
+  position: relative;
+}
+
+.menuBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  color: #606770;
+  padding: 4px 8px;
+  border-radius: 50%;
+  line-height: 1;
+  transition: background 0.15s;
+}
+
+.menuBtn:hover {
+  background: #f0f2f5;
+}
+
+.menuDropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 4px);
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+  min-width: 100px;
+  overflow: hidden;
+}
+
+.menuItem {
+  display: block;
+  width: 100%;
+  padding: 10px 16px;
+  text-align: left;
+  background: none;
+  border: none;
+  font-size: 0.88rem;
+  color: #1c1e21;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+
+.menuItem:hover:not(:disabled) {
+  background: #f0f2f5;
+}
+
+.menuItem:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.menuItemDanger {
+  color: #e74c3c;
+}
+
+/* ===== 본문 ===== */
+.body {
+  padding: 0 16px 10px;
+}
+
+.content {
+  font-size: 0.95rem;
+  color: #1c1e21;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* ===== 수정 폼 ===== */
+.editForm {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.editTextarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  resize: vertical;
+  line-height: 1.5;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.editTextarea:focus {
+  outline: none;
+  border-color: #1877f2;
+}
+
+.editActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.cancelBtn {
+  padding: 7px 16px;
+  background: #e4e6eb;
+  color: #444;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.cancelBtn:hover {
+  background: #d8dadf;
+}
+
+.saveBtn {
+  padding: 7px 16px;
+  background: #1877f2;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+}
+
+.saveBtn:hover:not(:disabled) {
+  background: #166fe5;
+}
+
+.saveBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ===== 미디어 그리드 ===== */
+.mediaGrid1 {
+  width: 100%;
+}
+
+.mediaGrid1 .mediaImg {
+  width: 100%;
+  max-height: 480px;
+  object-fit: cover;
+  display: block;
+}
+
+.mediaGrid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+}
+
+.mediaGrid2 .mediaImg {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  display: block;
+}
+
+.mediaGridMany {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mediaImgFirst {
+  width: 100%;
+  max-height: 360px;
+  object-fit: cover;
+  display: block;
+}
+
+.mediaGridRest {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px;
+}
+
+.mediaGridRest .mediaImg {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+
+/* ===== 에러 ===== */
+.inlineError {
+  font-size: 0.83rem;
+  color: #c0392b;
+  padding: 4px 16px;
+}
+
+/* ===== 액션 바 ===== */
+.actions {
+  display: flex;
+  border-top: 1px solid #e4e6eb;
+  padding: 4px 8px;
+}
+
+.actionBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: none;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  color: #606770;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+}
+
+.actionBtn:hover:not(:disabled) {
+  background: #f0f2f5;
+  color: #1877f2;
+}
+
+.actionBtn:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.actionBtn.liked {
+  color: #e74c3c;
+}
+
+.actionIcon {
+  font-size: 1rem;
+  line-height: 1;
+}

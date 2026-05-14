@@ -3,7 +3,7 @@ const router = express.Router();
 const { authenticate } = require('../middlewares/authenticate');
 const controllers = require('../controllers/feed');
 
-// GET /feed — 뉴스피드 조회
-router.get('/', authenticate, controllers.getFeed);
+// DELETE /comments/:id — 댓글 삭제
+router.delete('/:id', authenticate, controllers.deleteComment);
 
 module.exports = router;

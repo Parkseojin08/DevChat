@@ -17,7 +17,6 @@
 - **Database**: PostgreSQL
 - **Auth**: JWT (access 1h + refresh 14d) with refresh token 회전, **HttpOnly 쿠키**
 - **Password**: bcrypt
-- **Validation**: Zod (또는 Joi)
 
 ### Frontend
 - **Framework**: React (functional + hooks)
@@ -84,7 +83,7 @@ try {
 
 ### 3. 검증 단계 분리
 
-- **Controller**: 형식 검증 (Zod) — 이메일 형식, 길이, 필수 필드 → 400
+- **Controller**:  이메일 형식, 길이, 필수 필드 → 400
 - **Service**: 비즈니스 검증 (DB 체크) — 중복, 존재, 권한 → 409/404/403
 
 ### 4. 인증

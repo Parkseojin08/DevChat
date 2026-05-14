@@ -3,7 +3,13 @@
     "allow": [
       "Bash(npm run *)",
       "Bash(node -e \"require\\('./src/index.js'\\)\")",
-      "Bash(node --check src/index.js)"
+      "Bash(node --check src/index.js)",
+      "Bash(dir C:\\\\Users\\\\lsware\\\\Desktop\\\\projectDevChat\\\\client\\\\src *)",
+      "Bash(dir \"C:\\\\Users\\\\lsware\\\\Desktop\\\\projectDevChat\\\\client\\\\src\\\\api\")",
+      "Bash(dir \"C:\\\\Users\\\\lsware\\\\Desktop\\\\projectDevChat\\\\client\\\\src\\\\pages\")",
+      "Bash(dir \"C:\\\\Users\\\\lsware\\\\Desktop\\\\projectDevChat\\\\client\\\\src\\\\contexts\")",
+      "Bash(node -e \"require\\('dotenv'\\).config\\(\\); console.log\\('DB_HOST_SET:', !!process.env.PG_HOST, 'JWT_SET:', !!process.env.JWT_SECRET\\)\")",
+      "Bash(node -e ' *)"
     ]
   }
 }

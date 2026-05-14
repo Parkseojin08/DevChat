@@ -154,7 +154,7 @@ function SearchResultRow({ user }) {
 }
 
 export default function Friends() {
-  const { user: currentUser } = useAuth();
+  useAuth();
 
   // 탭 상태
   const [activeTab, setActiveTab] = useState('accepted');
@@ -225,9 +225,7 @@ export default function Friends() {
     try {
       const res = await searchUsers(trimmed);
       const users = res.data?.data?.users || [];
-      // 본인 필터링
-      const filtered = users.filter((u) => u.id !== currentUser?.id);
-      setSearchResults(filtered);
+      setSearchResults(users);
     } catch (err) {
       const msg = err.response?.data?.error?.message || '검색 중 오류가 발생했습니다.';
       setSearchError(msg);
@@ -275,7 +273,7 @@ export default function Friends() {
           </form>
 
           {searchError && (
-            <p className={styles.globalError} role="alert" style={{ marginTop: '10px' }}>
+            <p className={`${styles.globalError} ${styles.searchError}`} role="alert">
               {searchError}
             </p>
           )}

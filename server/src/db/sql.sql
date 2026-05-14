@@ -43,7 +43,7 @@ name            VARCHAR(50)  NOT NULL, /* 사용자 이름 */
 birth_date      DATE         NOT NULL, /* 사용자 생일 */
 bio             VARCHAR(200) NOT NULL DEFAULT '', /* 사용자 자기소개 */
 profile_image   VARCHAR(500), /* 사용자 이미지 */
-refresh_token   VARCHAR(512) default '',
+refresh_token   VARCHAR(512) DEFAULT NULL,
 created_at      TIMESTAMPTZ  NOT NULL DEFAULT NOW(), /* 사용자 생성날짜 */
 updated_at      TIMESTAMPTZ  NOT NULL DEFAULT NOW() /* 프로필 업데이터 날짜 */
 ); 
@@ -110,7 +110,7 @@ CREATE TABLE IF NOT EXISTS chat_rooms (
 id          UUID PRIMARY KEY DEFAULT gen_random_uuid(), /* 채팅방 고유 id */
 type        room_type_status NOT NULL, /* 채팅방 유형 (direct / group) */
 name        VARCHAR(100), /* 채팅방 이름 (그룹용, 1:1은 null) */
-direct_key  VARCHAR(73),           -- userA + '_' + userB = 73
+direct_key  VARCHAR(73) UNIQUE,     -- userA + '_' + userB = 73
 created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(), /* 채팅방 생성 날짜 */
 updated_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(), /* 마지막 활동 날짜 */
 CHECK (
@@ -127,7 +127,7 @@ room_id     UUID NOT NULL REFERENCES chat_rooms(id) ON DELETE CASCADE, /* 메시
 sender_id   UUID NOT NULL REFERENCES users(id)      ON DELETE CASCADE, /* 보낸 사람 */
 content     TEXT, /* 메시지 내용 */
 media_url   VARCHAR(500),
-is_deleted	boolean not null,
+is_deleted	BOOLEAN NOT NULL DEFAULT FALSE,
 created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW() /* 보낸 시각 */
 );
  
