@@ -140,18 +140,34 @@ try {
 
 ## Sub-Agent 사용 가이드
 
-`.claude/agents/`에 4개의 전문 sub-agent가 있습니다:
+`.claude/agents/`에 **6개**의 에이전트가 있습니다:
+
+### 메인 에이전트 (진입점)
+
+- `orchestrator` — **모든 기능 구현의 시작점**. 31개 기능 전체 범위와 의존 관계를 알고, 올바른 순서로 전문 에이전트에게 위임. 현황 파악도 여기서.
+
+### 전문 에이전트
 
 - `backend-developer` — Node.js/Express/Socket.io 구현
 - `frontend-developer` — React UI 구현
 - `db-specialist` — PostgreSQL 스키마·쿼리·마이그레이션
 - `code-reviewer` — 코드 품질·보안·컨벤션 리뷰
+- `tester` — End-to-end 테스트 (Front→Back→DB)
 
-작업 성격에 따라 자동으로 적절한 agent에게 위임됨. 명시적 호출도 가능:
+### 사용 원칙
+
+새 기능 구현은 반드시 **orchestrator**를 통해 시작. 오케스트레이터가 명세를 읽고 적절한 전문 에이전트를 순서대로 호출함:
+
+```
+db-specialist → backend-developer → frontend-developer → code-reviewer → tester
+```
+
+개별 에이전트 직접 호출은 이미 범위가 명확한 작업에만:
 
 ```
 @backend-developer 회원가입 API 구현해줘
 @code-reviewer 방금 작성한 회원가입 코드 리뷰
+@tester 친구 신청 기능 테스트해줘
 ```
 
 ## 개발 워크플로우

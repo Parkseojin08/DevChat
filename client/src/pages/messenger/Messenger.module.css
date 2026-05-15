@@ -1,0 +1,284 @@
+/* ===== 전체 레이아웃 ===== */
+.page {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  background: #f0f2f5;
+}
+
+/* ===== 왼쪽 사이드바 ===== */
+.sidebar {
+  width: 320px;
+  flex-shrink: 0;
+  background: #fff;
+  border-right: 1px solid #e4e6eb;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sidebarHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e4e6eb;
+  flex-shrink: 0;
+}
+
+.backLink {
+  font-size: 1.2rem;
+  color: #65676b;
+  text-decoration: none;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.12s;
+}
+
+.backLink:hover {
+  background: #f0f2f5;
+  color: #1877f2;
+}
+
+.sidebarTitle {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #1c1e21;
+  margin: 0;
+  flex: 1;
+}
+
+.newChatBtn {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.12s;
+  flex-shrink: 0;
+}
+
+.newChatBtn:hover {
+  background: #f0f2f5;
+}
+
+/* ===== 방 목록 ===== */
+.roomList {
+  list-style: none;
+  margin: 0;
+  padding: 8px 0;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.roomItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  border-radius: 8px;
+  margin: 2px 8px;
+  width: calc(100% - 16px);
+  box-sizing: border-box;
+  transition: background 0.12s;
+}
+
+.roomItem:hover {
+  background: #f0f2f5;
+}
+
+.roomItemActive {
+  background: #e7f3ff;
+}
+
+.roomItemActive:hover {
+  background: #d8ecff;
+}
+
+/* ===== 아바타 ===== */
+.avatar {
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.avatarPlaceholder {
+  border-radius: 50%;
+  overflow: hidden;
+  background: #e4e6eb;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===== 방 정보 ===== */
+.roomInfo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.roomTopRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.roomName {
+  font-size: 0.93rem;
+  font-weight: 700;
+  color: #1c1e21;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.roomTime {
+  font-size: 0.78rem;
+  color: #8a8d91;
+  flex-shrink: 0;
+}
+
+.roomBottomRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.roomPreview {
+  font-size: 0.85rem;
+  color: #65676b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  min-width: 0;
+}
+
+.unreadBadge {
+  background: #1877f2;
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 5px;
+  flex-shrink: 0;
+}
+
+/* ===== 로딩 / 에러 / 빈 상태 ===== */
+.loading,
+.error,
+.empty {
+  padding: 20px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #65676b;
+}
+
+.error {
+  color: #c0392b;
+}
+
+.error button {
+  margin-top: 8px;
+  padding: 6px 14px;
+  background: #1877f2;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.emptySub {
+  font-size: 0.82rem;
+  color: #8a8d91;
+  margin-top: 4px;
+}
+
+.linkHi {
+  color: #1877f2;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.linkHi:hover {
+  text-decoration: underline;
+}
+
+/* ===== 오른쪽 메인 ===== */
+.main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.emptyMain {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #65676b;
+  gap: 12px;
+  font-size: 0.95rem;
+}
+
+.emptyMainIcon {
+  font-size: 3rem;
+}
+
+.emptyNewBtn {
+  padding: 10px 24px;
+  background: #1877f2;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.12s;
+  margin-top: 4px;
+}
+
+.emptyNewBtn:hover {
+  background: #166fe5;
+}
+
+/* ===== 반응형 ===== */
+@media (max-width: 700px) {
+  .sidebar {
+    width: 100%;
+  }
+
+  .main {
+    display: none;
+  }
+}

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import {
   searchUsers,
@@ -8,6 +8,7 @@ import {
   deleteFriendship,
   listFriendships,
 } from '../api/friend';
+import { createRoom } from '../api/messenger';
 import styles from './Friends.module.css';
 
 // 탭 정의
@@ -31,7 +32,7 @@ function AvatarPlaceholder() {
 }
 
 // 개별 친구/신청 row 컴포넌트
-function FriendRow({ item, tabKey, onAction }) {
+function FriendRow({ item, tabKey, onAction, onStartChat }) {
   const [busy, setBusy] = useState(false);
   const [rowError, setRowError] = useState('');
 
@@ -64,13 +65,22 @@ function FriendRow({ item, tabKey, onAction }) {
         </div>
         <div className={styles.btnGroup}>
           {tabKey === 'accepted' && (
-            <button
-              className={styles.btnSecondary}
-              disabled={busy}
-              onClick={() => handleAction('delete')}
-            >
-              {busy ? '처리 중...' : '친구 끊기'}
-            </button>
+            <>
+              <button
+                className={styles.btnPrimary}
+                disabled={busy}
+                onClick={() => onStartChat(user.id)}
+              >
+                메시지
+              </button>
+              <button
+                className={styles.btnSecondary}
+                disabled={busy}
+                onClick={() => handleAction('delete')}
+              >
+                {busy ? '처리 중...' : '친구 끊기'}
+              </button>
+            </>
           )}
           {tabKey === 'incoming' && (
             <>
@@ -155,6 +165,7 @@ function SearchResultRow({ user }) {
 
 export default function Friends() {
   useAuth();
+  const navigate = useNavigate();
 
   // 탭 상태
   const [activeTab, setActiveTab] = useState('accepted');
@@ -210,6 +221,18 @@ export default function Friends() {
     }
     // 성공 후 목록 갱신
     await fetchList(activeTab);
+  };
+
+  // 메시지 보내기 — 1:1 채팅방 생성/조회 후 이동
+  const handleStartChat = async (targetUserId) => {
+    try {
+      const res = await createRoom({ type: 'direct', members: [targetUserId] });
+      const room = res.data?.data?.room;
+      if (room?.id) navigate(`/chats/${room.id}`);
+    } catch (err) {
+      const msg = err.response?.data?.error?.message || '채팅방을 시작할 수 없습니다.';
+      setListError(msg);
+    }
   };
 
   // 검색 실행
@@ -333,6 +356,7 @@ export default function Friends() {
                   item={item}
                   tabKey={activeTab}
                   onAction={handleAction}
+                  onStartChat={handleStartChat}
                 />
               ))}
           </div>

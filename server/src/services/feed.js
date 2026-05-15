@@ -101,6 +101,15 @@ exports.getFeed = async ({ userId, limit, cursor }) => {
     return buildPageResult(rows, limit);
 };
 
+// 탐색 피드: 무작위 표본이라 cursor 페이지네이션 부재 → next_cursor 항상 null
+exports.getExploreFeed = async ({ userId, limit }) => {
+    const rows = await feedRepo.getExploreFeedPosts({ userId, limit });
+    return {
+        posts: rows.map(formatPostRow),
+        next_cursor: null
+    };
+};
+
 exports.getUserFeed = async ({ userId, targetId, limit, cursor }) => {
     const user = await feedRepo.findUserById(targetId);
     if (!user) {

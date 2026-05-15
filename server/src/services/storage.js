@@ -10,6 +10,9 @@ const PROFILE_DIR = path.join(__dirname, '../../uploads/profile');
 // 게시글 미디어가 저장될 절대 경로
 const POSTS_DIR = path.join(__dirname, '../../uploads/posts');
 
+// 채팅 미디어가 저장될 절대 경로
+const CHAT_DIR = path.join(__dirname, '../../uploads/chat');
+
 // 허용 MIME 타입 → 확장자 맵
 const ALLOWED_MIME = {
     'image/jpeg': 'jpg',
@@ -33,9 +36,16 @@ const ensurePostsDir = () => {
     }
 };
 
+const ensureChatDir = () => {
+    if (!fs.existsSync(CHAT_DIR)) {
+        fs.mkdirSync(CHAT_DIR, { recursive: true });
+    }
+};
+
 // 모듈 로드 시점에 디렉토리 확인
 ensureProfileDir();
 ensurePostsDir();
+ensureChatDir();
 
 /**
  * 프로필 이미지를 디스크에 저장하고 상대 URL을 반환한다.
@@ -83,6 +93,28 @@ exports.savePostMedia = async (fileBuffer, mimetype) => {
     await fsp.writeFile(filepath, fileBuffer);
 
     return `/uploads/posts/${filename}`;
+};
+
+/**
+ * 채팅 미디어를 디스크에 저장하고 상대 URL을 반환한다.
+ */
+exports.saveChatMedia = async (fileBuffer, mimetype) => {
+    const ext = ALLOWED_MIME[mimetype];
+    if (!ext) {
+        throw new ValidationError(
+            'INVALID_FILE',
+            '허용되지 않는 파일 형식입니다. jpg, png, webp만 업로드 가능합니다.'
+        );
+    }
+
+    ensureChatDir();
+
+    const filename = `${crypto.randomUUID()}.${ext}`;
+    const filepath = path.join(CHAT_DIR, filename);
+
+    await fsp.writeFile(filepath, fileBuffer);
+
+    return `/uploads/chat/${filename}`;
 };
 
 /**

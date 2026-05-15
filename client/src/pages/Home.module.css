@@ -132,6 +132,80 @@
   min-width: 0;
 }
 
+/* ===== 탭 ===== */
+.tabs {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  display: flex;
+  overflow: hidden;
+}
+
+.tabBtn {
+  flex: 1;
+  padding: 14px 0;
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #65676b;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.12s, background 0.12s;
+}
+
+.tabBtn:hover {
+  background: #f0f2f5;
+}
+
+.tabBtnActive {
+  color: #1877f2;
+}
+
+.tabBtnActive::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: #1877f2;
+  border-radius: 3px 3px 0 0;
+}
+
+/* ===== 탐색 툴바 (다시 섞기) ===== */
+.exploreToolbar {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.reshuffleBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: #fff;
+  border: 1px solid #e4e6eb;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #1877f2;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.reshuffleBtn:hover:not(:disabled) {
+  background: #f0f2f5;
+  border-color: #1877f2;
+}
+
+.reshuffleBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /* ===== 에러 박스 ===== */
 .errorBox {
   background: #fff;

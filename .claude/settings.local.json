@@ -9,7 +9,12 @@
       "Bash(dir \"C:\\\\Users\\\\lsware\\\\Desktop\\\\projectDevChat\\\\client\\\\src\\\\pages\")",
       "Bash(dir \"C:\\\\Users\\\\lsware\\\\Desktop\\\\projectDevChat\\\\client\\\\src\\\\contexts\")",
       "Bash(node -e \"require\\('dotenv'\\).config\\(\\); console.log\\('DB_HOST_SET:', !!process.env.PG_HOST, 'JWT_SET:', !!process.env.JWT_SECRET\\)\")",
-      "Bash(node -e ' *)"
+      "Bash(node -e ' *)",
+      "Bash(dir C:UserslswareDesktopprojectDevChat *)",
+      "PowerShell(Write-Output \\(Get-ChildItem C:\\\\Users\\\\lsware\\\\Desktop\\\\projectDevChat | ForEach-Object { $_.Name }\\))",
+      "Bash(npm install *)",
+      "Bash(node -e \"require\\('cookie'\\)\")",
+      "PowerShell($env:PGPASSWORD = 'PSJZER0'; & \"C:\\\\Program Files\\\\PostgreSQL\\\\18\\\\bin\\\\psql.exe\" -U postgres -h localhost -d devchat -f \"C:\\\\Users\\\\lsware\\\\Desktop\\\\projectDevChat\\\\server\\\\src\\\\db\\\\sql.sql\" 2>&1)"
     ]
   }
 }

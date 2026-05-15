@@ -75,6 +75,20 @@ exports.getFeed = async (req, res, next) => {
     }
 };
 
+// GET /feed/explore
+exports.getExploreFeed = async (req, res, next) => {
+    try {
+        const { limit } = req.query;
+        const result = await feedService.getExploreFeed({
+            userId: req.user.id,
+            limit: Math.min(parseInt(limit, 10) || 20, 50)
+        });
+        return res.status(200).json({ data: { success: true, ...result } });
+    } catch (err) {
+        next(err);
+    }
+};
+
 // GET /posts/user/:userId
 exports.getUserFeed = async (req, res, next) => {
     try {

@@ -3,6 +3,9 @@ import api from './axios';
 export const getFeed = (cursor) =>
   api.get('/feed', { params: { ...(cursor ? { cursor } : {}) } });
 
+export const getExploreFeed = (limit) =>
+  api.get('/feed/explore', { params: limit ? { limit } : {} });
+
 export const getUserFeed = (userId, cursor) =>
   api.get(`/posts/user/${userId}`, { params: { ...(cursor ? { cursor } : {}) } });
 

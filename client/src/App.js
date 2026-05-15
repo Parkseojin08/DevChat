@@ -1,10 +1,12 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { SocketProvider } from './contexts/SocketContext';
 import Signup from './pages/auth/Signup';
 import Login from './pages/auth/Login';
 import Profile from './pages/auth/Profile';
 import Home from './pages/Home';
 import Friends from './pages/Friends';
+import Messenger from './pages/messenger/Messenger';
 import styles from './App.module.css';
 
 // 인증 여부 확인 후 보호 라우트 처리
@@ -65,6 +67,22 @@ function AppRoutes() {
         }
       />
       <Route
+        path="/chats"
+        element={
+          <PrivateRoute>
+            <Messenger />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/chats/:roomId"
+        element={
+          <PrivateRoute>
+            <Messenger />
+          </PrivateRoute>
+        }
+      />
+      <Route
         path="/"
         element={
           <PrivateRoute>
@@ -82,7 +100,9 @@ export default function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <AppRoutes />
+        <SocketProvider>
+          <AppRoutes />
+        </SocketProvider>
       </AuthProvider>
     </BrowserRouter>
   );

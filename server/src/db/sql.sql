@@ -2,6 +2,7 @@ set search_path to chatdata;
 
 BEGIN;
 
+DROP TABLE IF EXISTS notifications;
 DROP TABLE IF EXISTS room_members;
 DROP TABLE IF EXISTS messages;
 DROP TABLE IF EXISTS chat_rooms;

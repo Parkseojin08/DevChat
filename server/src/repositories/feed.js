@@ -124,6 +124,22 @@ exports.getFeedPosts = async ({ userId, cursor, limit }) => {
     return rows;
 };
 
+// 탐색 피드: 본인 게시글 제외 + TABLESAMPLE BERNOULLI로 무작위 표본
+// - percent는 데이터셋 작을 때 결과 부족을 줄이려 50으로 잡음
+// - LIMIT으로 캡 → 결과 크기 안정
+// - 매 호출마다 새 표본 (페이지네이션 없음)
+exports.getExploreFeedPosts = async ({ userId, limit }) => {
+    const { rows } = await pool.query(
+        `SELECT ${POST_SELECT}
+           FROM chatdata.posts p TABLESAMPLE BERNOULLI(50)
+           JOIN chatdata.users u ON u.id = p.author_id
+          WHERE p.author_id <> $1
+          LIMIT $2`,
+        [userId, limit]
+    );
+    return rows;
+};
+
 exports.getUserPosts = async ({ userId, targetId, cursor, limit }) => {
     // $1 = userId (is_liked), $2 = targetId, $3 = limit+1
     const params = [userId, targetId, limit + 1];
