@@ -40,7 +40,7 @@ exports.sendRequest = async ({ requesterId, addresseeId }) => {
     }
 
     try {
-        await friendshipRepo.insertPending({ requesterId, addresseeId });
+        await friendshipRepo.insertPendingWithNotification({ requesterId, addresseeId });
     } catch (err) {
         if (err.code === '23505') {
             // 동시 신청 race — 다시 한번 상태 확인
@@ -71,7 +71,7 @@ exports.acceptRequest = async ({ friendshipId, userId }) => {
         throw new ForbiddenError('FORBIDDEN', '수락 권한이 없습니다.');
     }
 
-    const updated = await friendshipRepo.acceptById(friendshipId);
+    const updated = await friendshipRepo.acceptByIdWithNotification(friendshipId);
     if (!updated) {
         // status가 이미 'accepted'였거나 동시 다른 요청이 먼저 처리한 경우
         throw new ConflictError('ALREADY_ACCEPTED', '이미 처리된 신청입니다.');

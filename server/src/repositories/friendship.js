@@ -46,32 +46,79 @@ exports.findRelation = async (userAId, userBId) => {
 };
 
 /**
- * pending 상태의 friendship row 삽입. 생성된 row 반환.
+ * pending 상태의 friendship row 삽입 + friend_request 알림 INSERT를 트랜잭션으로 처리.
+ * 생성된 friendship row 반환.
  */
-exports.insertPending = async ({ requesterId, addresseeId }) => {
-    const { rows } = await pool.query(
-        `INSERT INTO chatdata.friendships (requester_id, addressee_id, status)
-         VALUES ($1, $2, 'pending'::chatdata.friend_status)
-         RETURNING id, requester_id, addressee_id, status, created_at`,
-        [requesterId, addresseeId]
-    );
-    return rows[0];
+exports.insertPendingWithNotification = async ({ requesterId, addresseeId }) => {
+    const client = await pool.connect();
+    try {
+        await client.query('BEGIN');
+
+        const { rows } = await client.query(
+            `INSERT INTO chatdata.friendships (requester_id, addressee_id, status)
+             VALUES ($1, $2, 'pending'::chatdata.friend_status)
+             RETURNING id, requester_id, addressee_id, status, created_at`,
+            [requesterId, addresseeId]
+        );
+        const friendship = rows[0];
+
+        // 수신자(addressee)에게 친구 신청 알림. target_id = friendship.id
+        await client.query(
+            `INSERT INTO chatdata.notifications (user_id, actor_id, type, target_id)
+             VALUES ($1, $2, 'friend_request'::chatdata.notification_type, $3)`,
+            [addresseeId, requesterId, String(friendship.id)]
+        );
+
+        await client.query('COMMIT');
+        return friendship;
+    } catch (err) {
+        await client.query('ROLLBACK');
+        throw err;
+    } finally {
+        client.release();
+    }
 };
 
 /**
- * pending → accepted 상태 업데이트.
+ * pending → accepted 상태 업데이트 + friend_accepted 알림 INSERT를 트랜잭션으로 처리.
+ * 수락 성공 시 갱신된 friendship row, 이미 accepted 등으로 갱신 실패 시 null 반환.
  */
-exports.acceptById = async (id) => {
-    const { rows } = await pool.query(
-        `UPDATE chatdata.friendships
-            SET status = 'accepted'::chatdata.friend_status,
-                updated_at = NOW()
-          WHERE id = $1
-            AND status = 'pending'::chatdata.friend_status
-          RETURNING id, requester_id, addressee_id, status, updated_at`,
-        [id]
-    );
-    return rows[0] || null;
+exports.acceptByIdWithNotification = async (id) => {
+    const client = await pool.connect();
+    try {
+        await client.query('BEGIN');
+
+        const { rows } = await client.query(
+            `UPDATE chatdata.friendships
+                SET status = 'accepted'::chatdata.friend_status,
+                    updated_at = NOW()
+              WHERE id = $1
+                AND status = 'pending'::chatdata.friend_status
+              RETURNING id, requester_id, addressee_id, status, updated_at`,
+            [id]
+        );
+
+        if (rows.length === 0) {
+            await client.query('ROLLBACK');
+            return null;
+        }
+        const friendship = rows[0];
+
+        // 신청자(requester)에게 수락 알림. actor = addressee. target_id = friendship.id
+        await client.query(
+            `INSERT INTO chatdata.notifications (user_id, actor_id, type, target_id)
+             VALUES ($1, $2, 'friend_accepted'::chatdata.notification_type, $3)`,
+            [friendship.requester_id, friendship.addressee_id, String(friendship.id)]
+        );
+
+        await client.query('COMMIT');
+        return friendship;
+    } catch (err) {
+        await client.query('ROLLBACK');
+        throw err;
+    } finally {
+        client.release();
+    }
 };
 
 /**

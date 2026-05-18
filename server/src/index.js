@@ -60,7 +60,7 @@ app.delete('/messages/:id', authenticate, messengerCtrl.deleteMessage);
 app.use('/users', require('./routes/users'));
 
 // --- notification
-
+app.use('/notifications', require('./routes/notification'));
 
 //------------------------------
 // Error Handler (마지막)
