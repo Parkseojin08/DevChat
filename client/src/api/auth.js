@@ -15,4 +15,6 @@ export const getMe = () => api.get('/auth/me');
 export const updateProfile = (formData) => api.patch('/auth/me', formData);
 
 // 회원 탈퇴 — 본인 계정 영구 삭제 (CASCADE로 게시글·친구관계 등 모두 삭제)
-export const deleteAccount = () => api.delete('/auth/me');
+// 백엔드는 password 재확인을 요구한다.
+export const deleteAccount = (password) =>
+  api.delete('/auth/me', { data: { password } });

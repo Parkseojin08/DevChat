@@ -5,8 +5,9 @@ const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  // null  = 아직 확인 중
-  // false = 비로그인 확정
+  // authChecked: 초기 세션 복원(getMe) 완료 여부.
+  //  - false = 아직 확인 중 → PrivateRoute는 로딩 표시
+  //  - true  = 확인 완료 → user의 값(null이면 비로그인, 객체면 로그인)으로 분기
   const [authChecked, setAuthChecked] = useState(false);
 
   // 앱 최초 마운트 시 세션 복원

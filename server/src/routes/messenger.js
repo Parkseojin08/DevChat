@@ -20,6 +20,9 @@ router.get('/:id/messages', authenticate, messengerCtrl.getMessages);
 // POST   /chat-rooms/:id/messages/upload — 채팅 이미지 업로드
 router.post('/:id/messages/upload', authenticate, wrapUpload(upload.single('image')), messengerCtrl.uploadMessageImage);
 
+// PATCH  /chat-rooms/:id          — 채팅방 이름 변경 (그룹)
+router.patch('/:id', authenticate, messengerCtrl.renameRoom);
+
 // POST   /chat-rooms/:id/members  — 멤버 초대
 router.post('/:id/members', authenticate, messengerCtrl.inviteMembers);
 

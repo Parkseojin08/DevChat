@@ -1,3 +1,113 @@
 .authLoadingScreen {
   min-height: 100vh;
+  background: var(--color-bg);
+}
+
+/* ===== 모바일 하단 내비게이션 ===== */
+.bottomNav {
+  display: none; /* 데스크탑에선 숨김 */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--mobile-nav-height);
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  z-index: var(--z-nav);
+  padding: 0 8px;
+  padding-bottom: env(safe-area-inset-bottom, 0); /* iPhone notch 대응 */
+}
+
+.bottomNav > * {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  gap: 3px;
+  padding: 8px 4px;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: color var(--transition);
+  min-height: 0;
+}
+
+.navBtn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  gap: 3px;
+  padding: 6px 4px;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  transition: color var(--transition);
+}
+
+.navBtn:hover {
+  color: var(--color-primary);
+}
+
+.navBtnActive {
+  color: var(--color-primary);
+}
+
+.navIcon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.navLabel {
+  font-size: 0.68rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* 아이콘 + 배지 묶음 */
+.navIconWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navBadge {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  background: var(--color-danger);
+  color: #fff;
+  font-size: 0.62rem;
+  font-weight: 800;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  border: 1.5px solid var(--color-surface);
+  box-sizing: border-box;
+  animation: badgePop 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes badgePop {
+  from { transform: scale(0.5); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+/* 모바일에서만 하단 내비 표시 */
+@media (max-width: 767px) {
+  .bottomNav {
+    display: flex;
+    align-items: center;
+  }
 }

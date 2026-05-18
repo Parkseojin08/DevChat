@@ -1,5 +1,5 @@
 .section {
-  border-top: 1px solid #e4e6eb;
+  border-top: 1px solid var(--color-border);
   padding: 12px 16px;
   display: flex;
   flex-direction: column;
@@ -52,23 +52,23 @@
 .replyBtn {
   background: none;
   border: none;
-  color: #65676b;
+  color: var(--color-text-secondary);
   font-size: 0.75rem;
   font-weight: 600;
   cursor: pointer;
   padding: 2px 0;
-  transition: color 0.12s;
+  transition: color var(--transition-fast);
 }
 
 .replyBtn:hover {
-  color: #1877f2;
+  color: var(--color-primary);
   text-decoration: underline;
 }
 
 .avatar {
   width: 28px;
   height: 28px;
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   object-fit: cover;
   flex-shrink: 0;
   margin-top: 2px;
@@ -77,9 +77,9 @@
 .avatarPlaceholder {
   width: 28px;
   height: 28px;
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   overflow: hidden;
-  background: #e4e6eb;
+  background: var(--color-border);
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -88,29 +88,34 @@
 }
 
 .commentBubble {
-  background: #f0f2f5;
-  border-radius: 12px;
+  background: var(--color-bg);
+  border-radius: var(--radius-lg);
   padding: 8px 12px;
   min-width: 0;
   align-self: flex-start;
   max-width: 100%;
+  transition: background var(--transition-fast);
+}
+
+.commentBubble:hover {
+  background: #e9ebf0;
 }
 
 .commentAuthor {
   font-size: 0.82rem;
   font-weight: 700;
-  color: #1c1e21;
+  color: var(--color-text-primary);
   margin-right: 6px;
 }
 
 .commentHandle {
   font-size: 0.75rem;
-  color: #8a8d91;
+  color: var(--color-text-muted);
 }
 
 .commentContent {
   font-size: 0.88rem;
-  color: #1c1e21;
+  color: var(--color-text-primary);
   margin-top: 3px;
   white-space: pre-wrap;
   word-break: break-word;
@@ -118,7 +123,7 @@
 }
 
 .mention {
-  color: #1877f2;
+  color: var(--color-primary);
   font-weight: 600;
   margin-right: 2px;
 }
@@ -126,19 +131,19 @@
 .deleteBtn {
   background: none;
   border: none;
-  color: #8a8d91;
+  color: var(--color-text-muted);
   font-size: 0.75rem;
   cursor: pointer;
   padding: 4px;
-  border-radius: 4px;
+  border-radius: var(--radius-xs);
   flex-shrink: 0;
   margin-top: 4px;
-  transition: color 0.12s, background 0.12s;
+  transition: color var(--transition-fast), background var(--transition-fast);
   line-height: 1;
 }
 
 .deleteBtn:hover:not(:disabled) {
-  color: #e74c3c;
+  color: var(--color-danger);
   background: #fff0f0;
 }
 
@@ -151,13 +156,13 @@
 .showMoreBtn {
   background: none;
   border: none;
-  color: #1877f2;
+  color: var(--color-primary);
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
   padding: 4px 0;
   text-align: left;
-  transition: opacity 0.12s;
+  transition: opacity var(--transition-fast);
 }
 
 .showMoreBtn:hover {
@@ -167,7 +172,7 @@
 /* ===== 빈 상태 ===== */
 .emptyMsg {
   font-size: 0.85rem;
-  color: #8a8d91;
+  color: var(--color-text-muted);
   text-align: center;
   padding: 4px 0;
 }
@@ -184,40 +189,44 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  background: #f0f2f5;
-  border-radius: 20px;
+  background: var(--color-bg);
+  border-radius: var(--radius-pill);
   padding: 6px 10px 6px 14px;
   min-width: 0;
+  transition: background var(--transition-fast);
+}
+
+.inputWrapper:focus-within {
+  background: #e9ebf0;
 }
 
 .textarea {
   flex: 1;
   background: transparent;
   border: none;
-  outline: none;
   font-size: 0.88rem;
   font-family: inherit;
-  color: #1c1e21;
+  color: var(--color-text-primary);
   resize: none;
   line-height: 1.4;
   min-width: 0;
 }
 
 .textarea::placeholder {
-  color: #8a8d91;
+  color: var(--color-text-muted);
 }
 
 .submitBtn {
   background: none;
   border: none;
-  color: #1877f2;
+  color: var(--color-primary);
   font-size: 0.85rem;
   font-weight: 700;
   cursor: pointer;
   padding: 2px 4px;
-  border-radius: 4px;
+  border-radius: var(--radius-xs);
   flex-shrink: 0;
-  transition: opacity 0.12s;
+  transition: opacity var(--transition-fast);
   white-space: nowrap;
 }
 
@@ -226,14 +235,14 @@
 }
 
 .submitBtn:disabled {
-  color: #8a8d91;
+  color: var(--color-text-muted);
   cursor: not-allowed;
 }
 
 /* ===== 로딩 ===== */
 .loadingMsg {
   font-size: 0.85rem;
-  color: #8a8d91;
+  color: var(--color-text-muted);
   text-align: center;
   padding: 4px 0;
 }
@@ -241,13 +250,13 @@
 /* ===== 에러 ===== */
 .error {
   font-size: 0.82rem;
-  color: #c0392b;
+  color: var(--color-danger-hover);
   padding: 2px 4px;
 }
 
 .deleteError {
   font-size: 0.78rem;
-  color: #c0392b;
+  color: var(--color-danger-hover);
   padding: 0 4px 0 36px;
 }
 
@@ -257,16 +266,16 @@
   justify-content: space-between;
   align-items: center;
   gap: 8px;
-  background: #eaf3ff;
-  border-left: 3px solid #1877f2;
+  background: var(--color-primary-light);
+  border-left: 3px solid var(--color-primary);
   padding: 6px 12px;
-  border-radius: 4px;
+  border-radius: 0 var(--radius-xs) var(--radius-xs) 0;
   font-size: 0.82rem;
-  color: #1c1e21;
+  color: var(--color-text-primary);
 }
 
 .replyBannerHandle {
-  color: #8a8d91;
+  color: var(--color-text-muted);
   font-size: 0.75rem;
   margin-left: 4px;
   margin-right: 2px;
@@ -275,13 +284,14 @@
 .cancelReplyBtn {
   background: none;
   border: none;
-  color: #1877f2;
+  color: var(--color-primary);
   font-size: 0.78rem;
   font-weight: 600;
   cursor: pointer;
   padding: 2px 6px;
-  border-radius: 4px;
+  border-radius: var(--radius-xs);
   flex-shrink: 0;
+  transition: background var(--transition-fast);
 }
 
 .cancelReplyBtn:hover {

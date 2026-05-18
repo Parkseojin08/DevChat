@@ -294,6 +294,35 @@ exports.getMembers = async ({ roomId, userId }) => {
 };
 
 // ============================================================
+// 채팅방 이름 변경
+// ============================================================
+
+/**
+ * 그룹 채팅방 이름 변경.
+ * 비즈니스 검증:
+ *   - 채팅방 존재 (404)
+ *   - direct 채팅방 (400)
+ *   - 본인이 멤버 (403)
+ */
+exports.renameRoom = async ({ roomId, userId, name }) => {
+    const room = await messengerRepo.findRoomById(roomId);
+    if (!room) {
+        throw new NotFoundError('ROOM_NOT_FOUND', '채팅방을 찾을 수 없습니다.');
+    }
+
+    if (room.type === 'direct') {
+        throw new ValidationError('DIRECT_ROOM', '1:1 채팅방은 이름을 변경할 수 없습니다.');
+    }
+
+    const membership = await messengerRepo.findMembership(roomId, userId);
+    if (!membership) {
+        throw new ForbiddenError('NOT_MEMBER', '채팅방 멤버가 아닙니다.');
+    }
+
+    return messengerRepo.updateRoomName(roomId, name);
+};
+
+// ============================================================
 // 채팅방 나가기
 // ============================================================
 

@@ -246,6 +246,44 @@ exports.getMembers = async (req, res, next) => {
 };
 
 // ============================================================
+// PATCH /chat-rooms/:id — 채팅방 이름 변경
+// ============================================================
+exports.renameRoom = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+
+        if (!isValidUUID(id)) {
+            throw new ValidationError('INVALID_ROOM_ID', '채팅방 ID 형식이 올바르지 않습니다.');
+        }
+
+        const { name } = req.body || {};
+
+        if (!name || typeof name !== 'string' || name.trim().length === 0) {
+            throw new ValidationError('INVALID_NAME', '채팅방 이름을 입력해주세요.');
+        }
+
+        if (name.trim().length > 100) {
+            throw new ValidationError('NAME_TOO_LONG', '채팅방 이름은 100자 이하로 입력해주세요.');
+        }
+
+        const updated = await messengerService.renameRoom({
+            roomId: id,
+            userId: req.user.id,
+            name: name.trim()
+        });
+
+        return res.status(200).json({
+            data: {
+                success: true,
+                room: updated
+            }
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
+// ============================================================
 // DELETE /chat-rooms/:id/members/me — 채팅방 나가기
 // ============================================================
 exports.leaveRoom = async (req, res, next) => {

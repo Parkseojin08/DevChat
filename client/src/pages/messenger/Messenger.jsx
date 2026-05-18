@@ -84,7 +84,6 @@ export default function Messenger() {
         setRooms((prev) =>
           prev.map((r) => {
             if (r.id !== msg.room_id) return r;
-            // 현재 보고 있는 방이면 unread_count 증가 안 함, 다른 방이면 +1
             const isViewingThisRoom = roomId === r.id;
             const isMine = msg.sender_id === user?.id;
             return {
@@ -122,7 +121,7 @@ export default function Messenger() {
     [onMessageDeleted]
   );
 
-  // 방 진입 시 그 방의 unread_count 0으로 (실제 markRead는 ChatRoom이 수행)
+  // 방 진입 시 그 방의 unread_count 0으로
   useEffect(() => {
     if (!roomId) return;
     setRooms((prev) =>
@@ -130,12 +129,33 @@ export default function Messenger() {
     );
   }, [roomId]);
 
+  // roomDisplay는 myId를 알아야 함 — rooms를 map해서 표시 이름 계산
+  const roomsWithDisplay = rooms.map((room) => ({
+    ...room,
+    _display: roomDisplay(room, user?.id),
+  }));
+
+  const handleSelectRoom = (id) => {
+    navigate(`/chats/${id}`);
+  };
+
+  const handleBackToList = () => {
+    navigate('/chats');
+  };
+
+  // isMobile: CSS 미디어 쿼리 로직을 JS에서 감지
+  // 실제 반응형 표시/숨김은 CSS가 담당하고, JS는 navigate만 수행
+  const isRoomSelected = !!roomId;
+
   return (
-    <div className={styles.page}>
+    <div className={`${styles.page} ${isRoomSelected ? styles.pageRoomOpen : ''}`}>
+      {/* 사이드바 — 채팅방 목록 */}
       <aside className={styles.sidebar}>
         <header className={styles.sidebarHeader}>
           <Link to="/" className={styles.backLink} aria-label="홈으로">
-            ←
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="15 18 9 12 15 6" />
+            </svg>
           </Link>
           <h2 className={styles.sidebarTitle}>메신저</h2>
           <button
@@ -144,45 +164,55 @@ export default function Messenger() {
             aria-label="새 채팅방 만들기"
             title="새 채팅방"
           >
-            ✏️
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+            </svg>
           </button>
         </header>
 
-        {loading && <div className={styles.loading}>불러오는 중...</div>}
+        {loading && (
+          <div className={styles.stateBox}>
+            <div className={styles.loadingSpinner} aria-hidden="true" />
+            <span>불러오는 중...</span>
+          </div>
+        )}
 
-        {error && (
-          <div className={styles.error}>
+        {error && !loading && (
+          <div className={`${styles.stateBox} ${styles.errorBox}`}>
             <p>{error}</p>
-            <button onClick={loadRooms}>다시 시도</button>
+            <button className={styles.retryBtn} onClick={loadRooms}>다시 시도</button>
           </div>
         )}
 
         {!loading && !error && rooms.length === 0 && (
-          <div className={styles.empty}>
-            <p>아직 채팅방이 없습니다.</p>
+          <div className={`${styles.stateBox} ${styles.emptyBox}`}>
+            <div className={styles.emptyIcon} aria-hidden="true">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+              </svg>
+            </div>
+            <p className={styles.emptyText}>아직 채팅방이 없습니다.</p>
             <p className={styles.emptySub}>
-              <Link to="/friends" className={styles.linkHi}>
-                친구 페이지
-              </Link>
+              <Link to="/friends" className={styles.linkHi}>친구 페이지</Link>
               에서 메시지를 보내보세요.
             </p>
           </div>
         )}
 
         <ul className={styles.roomList}>
-          {rooms.map((room) => {
-            const d = roomDisplay(room, user?.id);
+          {roomsWithDisplay.map((room) => {
             const isActive = room.id === roomId;
             return (
               <li key={room.id}>
                 <button
                   className={`${styles.roomItem} ${isActive ? styles.roomItemActive : ''}`}
-                  onClick={() => navigate(`/chats/${room.id}`)}
+                  onClick={() => handleSelectRoom(room.id)}
                 >
-                  <Avatar src={d.image} size={48} />
+                  <Avatar src={room._display.image} size={48} />
                   <div className={styles.roomInfo}>
                     <div className={styles.roomTopRow}>
-                      <span className={styles.roomName}>{d.name}</span>
+                      <span className={styles.roomName}>{room._display.name}</span>
                       <span className={styles.roomTime}>
                         {timeAgo(room.last_message?.created_at)}
                       </span>
@@ -205,13 +235,40 @@ export default function Messenger() {
         </ul>
       </aside>
 
+      {/* 메인 — 채팅룸 또는 선택 안내 */}
       <main className={styles.main}>
         {roomId ? (
-          <ChatRoom key={roomId} roomId={roomId} room={rooms.find((r) => r.id === roomId)} />
+          <>
+            {/* 모바일: 뒤로가기 버튼 (ChatRoom 헤더 위에 주입) */}
+            <div className={styles.mobileBackBar}>
+              <button
+                className={styles.mobileBackBtn}
+                onClick={handleBackToList}
+                aria-label="채팅방 목록으로"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="15 18 9 12 15 6" />
+                </svg>
+                <span>목록</span>
+              </button>
+            </div>
+            <ChatRoom
+              key={roomId}
+              roomId={roomId}
+              room={rooms.find((r) => r.id === roomId)}
+              onNameChange={(id, name) =>
+                setRooms((prev) => prev.map((r) => (r.id === id ? { ...r, name } : r)))
+              }
+            />
+          </>
         ) : (
           <div className={styles.emptyMain}>
-            <div className={styles.emptyMainIcon} aria-hidden="true">💬</div>
-            <p>채팅방을 선택해 대화를 시작하세요</p>
+            <div className={styles.emptyMainIcon} aria-hidden="true">
+              <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+              </svg>
+            </div>
+            <p className={styles.emptyMainText}>채팅방을 선택해 대화를 시작하세요</p>
             <button className={styles.emptyNewBtn} onClick={() => setShowNewChat(true)}>
               새 채팅방 만들기
             </button>

@@ -47,6 +47,20 @@ exports.insertRoom = async ({ type, name, directKey }, client) => {
 /**
  * 채팅방 멤버 일괄 insert (배열). RETURNING id, user_id, joined_at.
  */
+/**
+ * 그룹 채팅방 이름 변경. updated_at 갱신 포함.
+ */
+exports.updateRoomName = async (roomId, name) => {
+    const { rows } = await pool.query(
+        `UPDATE chatdata.chat_rooms
+            SET name = $2, updated_at = NOW()
+          WHERE id = $1
+          RETURNING id, name`,
+        [roomId, name]
+    );
+    return rows[0] || null;
+};
+
 exports.insertRoomMembers = async (roomId, userIds, client) => {
     const db = client || pool;
     // 각 userId에 대해 개별 insert 수행 (bulk용 VALUES 생성)

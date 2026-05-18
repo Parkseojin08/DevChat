@@ -32,6 +32,10 @@ export const getMessages = (roomId, { cursor, limit } = {}) =>
 // 멤버
 // ============================================================
 
+// 그룹 채팅방 이름 변경
+export const renameRoom = (roomId, name) =>
+  api.patch(`/chat-rooms/${roomId}`, { name });
+
 // 그룹 채팅방에 멤버 초대
 export const inviteMembers = (roomId, userIds) =>
   api.post(`/chat-rooms/${roomId}/members`, { user_ids: userIds });

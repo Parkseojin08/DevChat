@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useUnread } from '../contexts/UnreadContext';
 import { getFeed, getExploreFeed } from '../api/feed';
 import CreatePost from '../components/feature/CreatePost';
 import PostCard from '../components/feature/PostCard';
@@ -23,6 +24,7 @@ function SidebarAvatar({ src, name }) {
 
 export default function Home() {
   const { user, logout } = useAuth();
+  const { totalUnread } = useUnread();
 
   const [tab, setTab] = useState('friends'); // 'friends' | 'explore'
   const [posts, setPosts] = useState([]);
@@ -156,6 +158,11 @@ export default function Home() {
             <Link to="/chats" className={styles.navItem}>
               <span className={styles.navIcon}>💬</span>
               메신저
+              {totalUnread > 0 && (
+                <span className={styles.navBadge} aria-label={`안 읽은 메시지 ${totalUnread}개`}>
+                  {totalUnread > 99 ? '99+' : totalUnread}
+                </span>
+              )}
             </Link>
             <Link to="/me" className={styles.navItem}>
               <span className={styles.navIcon}>✏️</span>

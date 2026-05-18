@@ -14,7 +14,10 @@
       "PowerShell(Write-Output \\(Get-ChildItem C:\\\\Users\\\\lsware\\\\Desktop\\\\projectDevChat | ForEach-Object { $_.Name }\\))",
       "Bash(npm install *)",
       "Bash(node -e \"require\\('cookie'\\)\")",
-      "PowerShell($env:PGPASSWORD = 'PSJZER0'; & \"C:\\\\Program Files\\\\PostgreSQL\\\\18\\\\bin\\\\psql.exe\" -U postgres -h localhost -d devchat -f \"C:\\\\Users\\\\lsware\\\\Desktop\\\\projectDevChat\\\\server\\\\src\\\\db\\\\sql.sql\" 2>&1)"
+      "PowerShell($env:PGPASSWORD = 'PSJZER0'; & \"C:\\\\Program Files\\\\PostgreSQL\\\\18\\\\bin\\\\psql.exe\" -U postgres -h localhost -d devchat -f \"C:\\\\Users\\\\lsware\\\\Desktop\\\\projectDevChat\\\\server\\\\src\\\\db\\\\sql.sql\" 2>&1)",
+      "Bash(ls \"c:\\\\Users\\\\lsware\\\\Desktop\\\\projectDevChat\\\\\")",
+      "Read(//c/Users/lsware/Desktop/**)",
+      "Bash(Remove-Item \"c:\\\\Users\\\\lsware\\\\Desktop\\\\projectDevChat\\\\test_user.txt\" -Force)"
     ]
   }
 }

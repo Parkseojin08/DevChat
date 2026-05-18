@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { likePost, unlikePost, deletePost, updatePost } from '../../api/feed';
 import CommentSection from './CommentSection';
@@ -154,7 +155,11 @@ export default function PostCard({ post, onDelete, onUpdate }) {
     <article className={styles.card}>
       {/* 헤더 */}
       <header className={styles.header}>
-        <div className={styles.authorInfo}>
+        <Link
+          to={isOwner ? '/me' : `/users/${post.author.id}`}
+          className={styles.authorInfo}
+          aria-label={`${post.author.name} 프로필 보기`}
+        >
           {post.author.profile_image ? (
             <img src={post.author.profile_image} alt="" className={styles.avatar} />
           ) : (
@@ -165,7 +170,7 @@ export default function PostCard({ post, onDelete, onUpdate }) {
             <span className={styles.authorHandle}>@{post.author.handle}</span>
             <span className={styles.postTime}>{formatRelativeTime(post.created_at)}</span>
           </div>
-        </div>
+        </Link>
 
         {isOwner && (
           <div className={styles.menuWrapper}>

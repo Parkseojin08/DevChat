@@ -4,92 +4,82 @@
   align-items: center;
   justify-content: center;
   padding: 24px 16px;
+  background: var(--color-bg);
+}
+
+/* 모바일: 하단 내비 공간 확보 */
+@media (max-width: 767px) {
+  .page {
+    padding-bottom: calc(var(--mobile-nav-height) + 24px);
+  }
 }
 
 .card {
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-  padding: 32px 28px;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 36px 32px;
   width: 100%;
-  max-width: 480px;
+  max-width: 520px;
+  animation: fadeUp 0.25s ease;
 }
 
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== Logo ===== */
+.logoWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.logoIcon { flex-shrink: 0; line-height: 0; }
+
 .title {
-  font-size: 1.6rem;
-  font-weight: 700;
-  color: #1877f2;
-  text-align: center;
-  margin-bottom: 4px;
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  letter-spacing: -0.5px;
 }
 
 .subtitle {
   text-align: center;
-  color: #606770;
+  color: var(--color-text-secondary);
   font-size: 0.95rem;
   margin-bottom: 24px;
 }
 
+/* ===== Form ===== */
 .form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
 }
 
-.fieldGroup {
+/* ===== Avatar Section ===== */
+.avatarSection {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.label {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #444;
-}
-
-.input {
-  padding: 10px 12px;
-  border: 1.5px solid #ddd;
-  border-radius: 6px;
-  font-size: 0.95rem;
-  transition: border-color 0.2s;
-  width: 100%;
-}
-
-.input:focus {
-  outline: none;
-  border-color: #1877f2;
-}
-
-.inputError {
-  border-color: #e53935;
-}
-
-.fieldError {
-  font-size: 0.8rem;
-  color: #e53935;
-  margin-top: 2px;
-}
-
-/* 파일 업로드 영역 */
-.fileArea {
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 20px;
+  padding: 14px 16px;
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+  border: 1.5px dashed var(--color-border);
 }
 
 .previewWrap {
-  width: 96px;
-  height: 96px;
-  border-radius: 50%;
+  position: relative;
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-full);
   overflow: hidden;
-  background: #e4e6eb;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   flex-shrink: 0;
+  background: var(--color-border);
 }
 
 .previewImg {
@@ -106,67 +96,206 @@
   justify-content: center;
 }
 
-.fileLabel {
-  display: inline-block;
-  padding: 7px 14px;
-  background: #e7f0fd;
-  color: #1877f2;
-  border-radius: 6px;
-  font-size: 0.88rem;
-  font-weight: 600;
+.avatarEditBtn {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 6px;
+  background: linear-gradient(transparent 40%, rgba(0,0,0,0.5));
+  color: #fff;
   cursor: pointer;
-  transition: background 0.15s;
+  opacity: 0;
+  transition: opacity var(--transition);
+  border-radius: inherit;
 }
 
-.fileLabel:hover {
-  background: #d0e4fb;
+.previewWrap:hover .avatarEditBtn,
+.previewWrap:focus-within .avatarEditBtn {
+  opacity: 1;
 }
 
-.fileInput {
-  display: none;
+.fileInput { display: none; }
+
+.avatarMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.avatarLabel {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.optionalBadge {
+  font-size: 0.72rem;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  border-radius: var(--radius-pill);
+  padding: 1px 7px;
+  font-weight: 500;
 }
 
 .fileHint {
   font-size: 0.78rem;
-  color: #8a8d91;
+  color: var(--color-text-muted);
 }
 
-/* 전역 에러 */
-.globalError {
-  background: #ffecec;
-  border: 1px solid #f5c6c6;
-  border-radius: 6px;
-  padding: 10px 14px;
-  color: #c0392b;
-  font-size: 0.88rem;
-  text-align: center;
+/* ===== 2열 그리드 ===== */
+.fieldRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
 }
 
-/* 성공 메시지 */
-.successMsg {
-  background: #e6ffed;
-  border: 1px solid #b7ebc7;
-  border-radius: 6px;
-  padding: 10px 14px;
-  color: #1a7f37;
-  font-size: 0.88rem;
-  text-align: center;
+@media (max-width: 479px) {
+  .fieldRow {
+    grid-template-columns: 1fr;
+  }
 }
 
-.submitBtn {
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+/* ===== Input ===== */
+.input {
+  padding: 11px 14px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  transition: border-color var(--transition), box-shadow var(--transition);
   width: 100%;
-  padding: 12px;
-  background: #1877f2;
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+}
+
+.input::placeholder {
+  color: var(--color-text-placeholder);
+  font-size: 0.88rem;
+}
+
+.input:hover {
+  border-color: #c5c8ce;
+}
+
+.input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(24, 119, 242, 0.12);
+}
+
+.inputError {
+  border-color: var(--color-danger);
+}
+
+.inputError:focus {
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.12);
+}
+
+/* ===== Password wrap ===== */
+.passwordWrap {
+  position: relative;
+}
+
+.passwordWrap .input {
+  padding-right: 44px;
+}
+
+.eyeBtn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  border-radius: var(--radius-xs);
+  transition: color var(--transition);
+  line-height: 0;
+}
+
+.eyeBtn:hover {
+  color: var(--color-text-secondary);
+}
+
+/* ===== Field Error ===== */
+.fieldError {
+  font-size: 0.78rem;
+  color: var(--color-danger);
+  margin-top: 1px;
+}
+
+/* ===== Global messages ===== */
+.globalError {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--color-danger-light);
+  border: 1px solid #f5c6c6;
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  color: var(--color-danger-hover);
+  font-size: 0.88rem;
+  margin-bottom: 4px;
+}
+
+.successMsg {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--color-success-light);
+  border: 1px solid #b7ebc7;
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  color: var(--color-success);
+  font-size: 0.88rem;
+  margin-bottom: 4px;
+}
+
+/* ===== Submit ===== */
+.submitBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 13px;
+  background: var(--color-primary);
   color: #fff;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   font-size: 1rem;
   font-weight: 700;
-  transition: background 0.15s, opacity 0.15s;
+  transition: background var(--transition), transform var(--transition-fast);
   margin-top: 4px;
+  letter-spacing: 0.02em;
 }
 
 .submitBtn:hover:not(:disabled) {
-  background: #166fe5;
+  background: var(--color-primary-hover);
+  transform: translateY(-1px);
+}
+
+.submitBtn:active:not(:disabled) {
+  transform: translateY(0);
 }
 
 .submitBtn:disabled {
@@ -174,19 +303,40 @@
   cursor: not-allowed;
 }
 
+.spinnerIcon {
+  width: 18px;
+  height: 18px;
+  animation: spin 0.8s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ===== Divider ===== */
 .divider {
   text-align: center;
-  color: #8a8d91;
+  color: var(--color-text-muted);
   font-size: 0.88rem;
-  margin-top: 16px;
+  margin-top: 20px;
 }
 
 .link {
-  color: #1877f2;
-  font-weight: 600;
-  cursor: pointer;
+  color: var(--color-primary);
+  font-weight: 700;
+  transition: color var(--transition);
 }
 
 .link:hover {
+  color: var(--color-primary-hover);
   text-decoration: underline;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 479px) {
+  .card {
+    padding: 24px 16px;
+    border-radius: var(--radius-md);
+  }
 }

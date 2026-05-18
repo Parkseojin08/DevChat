@@ -54,15 +54,19 @@ function FriendRow({ item, tabKey, onAction, onStartChat }) {
   return (
     <>
       <div className={styles.friendRow}>
-        {user.profile_image ? (
-          <img src={user.profile_image} alt="" className={styles.avatar} />
-        ) : (
-          <AvatarPlaceholder />
-        )}
-        <div className={styles.userInfo}>
-          <span className={styles.userName}>{user.name}</span>
-          <span className={styles.userHandle}>@{user.handle}</span>
-        </div>
+        <Link to={`/users/${user.id}`} className={styles.avatarLink}>
+          {user.profile_image ? (
+            <img src={user.profile_image} alt="" className={styles.avatar} />
+          ) : (
+            <AvatarPlaceholder />
+          )}
+        </Link>
+        <Link to={`/users/${user.id}`} className={styles.userInfoLink}>
+          <div className={styles.userInfo}>
+            <span className={styles.userName}>{user.name}</span>
+            <span className={styles.userHandle}>@{user.handle}</span>
+          </div>
+        </Link>
         <div className={styles.btnGroup}>
           {tabKey === 'accepted' && (
             <>
@@ -139,15 +143,19 @@ function SearchResultRow({ user }) {
   return (
     <>
       <div className={styles.friendRow}>
-        {user.profile_image ? (
-          <img src={user.profile_image} alt="" className={styles.avatar} />
-        ) : (
-          <AvatarPlaceholder />
-        )}
-        <div className={styles.userInfo}>
-          <span className={styles.userName}>{user.name}</span>
-          <span className={styles.userHandle}>@{user.handle}</span>
-        </div>
+        <Link to={`/users/${user.id}`} className={styles.avatarLink}>
+          {user.profile_image ? (
+            <img src={user.profile_image} alt="" className={styles.avatar} />
+          ) : (
+            <AvatarPlaceholder />
+          )}
+        </Link>
+        <Link to={`/users/${user.id}`} className={styles.userInfoLink}>
+          <div className={styles.userInfo}>
+            <span className={styles.userName}>{user.name}</span>
+            <span className={styles.userHandle}>@{user.handle}</span>
+          </div>
+        </Link>
         <div className={styles.btnGroup}>
           <button
             className={styles.btnPrimary}
@@ -164,7 +172,7 @@ function SearchResultRow({ user }) {
 }
 
 export default function Friends() {
-  useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   // 탭 상태
@@ -248,7 +256,9 @@ export default function Friends() {
     try {
       const res = await searchUsers(trimmed);
       const users = res.data?.data?.users || [];
-      setSearchResults(users);
+      // 본인은 검색 결과에서 제외 (자기 자신에게 친구 신청 불가)
+      const filtered = user?.id ? users.filter((u) => u.id !== user.id) : users;
+      setSearchResults(filtered);
     } catch (err) {
       const msg = err.response?.data?.error?.message || '검색 중 오류가 발생했습니다.';
       setSearchError(msg);
@@ -271,7 +281,12 @@ export default function Friends() {
       <div className={styles.inner}>
         {/* 헤더 */}
         <div className={styles.header}>
-          <Link to="/" className={styles.backLink}>← 홈</Link>
+          <Link to="/" className={styles.backLink} aria-label="홈으로">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="15 18 9 12 15 6" />
+            </svg>
+            홈으로
+          </Link>
           <h1 className={styles.pageTitle}>친구 관리</h1>
         </div>
 
@@ -338,7 +353,10 @@ export default function Friends() {
             )}
 
             {listLoading && (
-              <p className={styles.loadingMsg}>불러오는 중...</p>
+              <div className={styles.loadingMsg}>
+                <div className={styles.loadingSpinner} aria-hidden="true" />
+                <span>불러오는 중...</span>
+              </div>
             )}
 
             {!listLoading && !listError && friendships.length === 0 && (

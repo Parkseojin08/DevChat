@@ -1,7 +1,7 @@
 .card {
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-xs);
   padding: 14px 16px;
   display: flex;
   flex-direction: column;
@@ -16,20 +16,20 @@
 }
 
 .avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-full);
   object-fit: cover;
   flex-shrink: 0;
   margin-top: 4px;
 }
 
 .avatarPlaceholder {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-full);
   overflow: hidden;
-  background: #e4e6eb;
+  background: var(--color-border);
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -40,21 +40,20 @@
 .textarea {
   flex: 1;
   border: none;
-  outline: none;
-  background: #f0f2f5;
-  border-radius: 20px;
+  background: var(--color-bg);
+  border-radius: var(--radius-pill);
   padding: 10px 16px;
   font-size: 0.95rem;
   font-family: inherit;
-  color: #1c1e21;
+  color: var(--color-text-primary);
   resize: none;
   line-height: 1.5;
   min-width: 0;
-  transition: background 0.15s;
+  transition: background var(--transition);
 }
 
 .textarea::placeholder {
-  color: #8a8d91;
+  color: var(--color-text-muted);
 }
 
 .textarea:focus {
@@ -66,14 +65,14 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  padding-left: 46px;
+  padding-left: 48px;
 }
 
 .previewItem {
   position: relative;
   width: 72px;
   height: 72px;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   overflow: hidden;
   flex-shrink: 0;
 }
@@ -88,19 +87,19 @@
   position: absolute;
   top: 3px;
   right: 3px;
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   background: rgba(0, 0, 0, 0.55);
   color: #fff;
   border: none;
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   font-size: 0.65rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   line-height: 1;
-  transition: background 0.12s;
+  transition: background var(--transition-fast);
 }
 
 .removeBtn:hover {
@@ -110,7 +109,7 @@
 /* ===== 에러 ===== */
 .error {
   font-size: 0.83rem;
-  color: #c0392b;
+  color: var(--color-danger-hover);
   padding: 0 4px;
 }
 
@@ -119,7 +118,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-top: 1px solid #e4e6eb;
+  border-top: 1px solid var(--color-border);
   padding-top: 10px;
 }
 
@@ -136,17 +135,17 @@
   padding: 8px 12px;
   background: none;
   border: none;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   font-size: 0.88rem;
-  color: #606770;
+  color: var(--color-text-secondary);
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.12s, color 0.12s;
+  transition: background var(--transition-fast), color var(--transition-fast);
 }
 
 .mediaBtn:hover:not(:disabled) {
-  background: #f0f2f5;
-  color: #1877f2;
+  background: var(--color-bg);
+  color: var(--color-primary);
 }
 
 .mediaBtn:disabled {
@@ -156,11 +155,12 @@
 
 .mediaBtnIcon {
   font-size: 1rem;
+  line-height: 0;
 }
 
 .fileCount {
   font-size: 0.78rem;
-  color: #1877f2;
+  color: var(--color-primary);
   font-weight: 700;
 }
 
@@ -169,19 +169,24 @@
 }
 
 .submitBtn {
-  padding: 8px 20px;
-  background: #1877f2;
+  padding: 8px 22px;
+  background: var(--color-primary);
   color: #fff;
   border: none;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   font-size: 0.9rem;
   font-weight: 700;
   cursor: pointer;
-  transition: background 0.15s, opacity 0.15s;
+  transition: background var(--transition), transform var(--transition-fast), opacity var(--transition);
 }
 
 .submitBtn:hover:not(:disabled) {
-  background: #166fe5;
+  background: var(--color-primary-hover);
+  transform: translateY(-1px);
+}
+
+.submitBtn:active:not(:disabled) {
+  transform: translateY(0);
 }
 
 .submitBtn:disabled {

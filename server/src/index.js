@@ -56,6 +56,9 @@ const messengerCtrl = require('./controllers/messenger');
 const { authenticate } = require('./middlewares/authenticate');
 app.delete('/messages/:id', authenticate, messengerCtrl.deleteMessage);
 
+// --- users (공개 프로필)
+app.use('/users', require('./routes/users'));
+
 // --- notification
 
 
