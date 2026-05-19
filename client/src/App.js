@@ -33,6 +33,27 @@ function PublicOnlyRoute({ children }) {
   return user ? <Navigate to="/" replace /> : children;
 }
 
+// 상단 고정 헤더 — 로그인 상태, 공개 페이지 제외
+function TopBar() {
+  const { user } = useAuth();
+  const location = useLocation();
+  const hiddenPaths = ['/login', '/signup'];
+  if (!user || hiddenPaths.includes(location.pathname)) return null;
+
+  return (
+    <header className={styles.topBar} role="banner">
+      <div className={styles.topBarInner}>
+        <span className={styles.topBarLogo}>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+          DevChat
+        </span>
+      </div>
+    </header>
+  );
+}
+
 // 모바일 하단 내비게이션 — 인증된 사용자에게만, 공개 페이지에선 숨김
 function BottomNav() {
   const { user } = useAuth();
@@ -192,6 +213,7 @@ export default function App() {
       <AuthProvider>
         <SocketProvider>
           <UnreadProvider>
+            <TopBar />
             <AppRoutes />
             <BottomNav />
           </UnreadProvider>

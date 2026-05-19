@@ -11,6 +11,7 @@ DROP TABLE IF EXISTS comments;
 DROP TABLE IF EXISTS posts_media;
 DROP TABLE IF EXISTS posts;
 DROP TABLE IF EXISTS friendships;
+DROP TABLE IF EXISTS email_verifications;
 DROP TABLE IF EXISTS users;
 
 DROP TYPE IF EXISTS friend_status;
@@ -162,6 +163,20 @@ CREATE INDEX idx_notifications_user_recent
 CREATE INDEX idx_notifications_user_unread
   ON notifications (user_id)
   WHERE is_read = FALSE;
+
+-- email_verifications table (회원가입 이메일 인증 임시 저장)
+CREATE TABLE IF NOT EXISTS email_verifications (
+  id          BIGSERIAL PRIMARY KEY,
+  email       VARCHAR(255) NOT NULL UNIQUE, /* 인증 대상 이메일 */
+  code        CHAR(6)      NOT NULL,        /* 6자리 숫자 코드 */
+  payload     JSONB        NOT NULL,        /* 회원가입 임시 정보 */
+  attempts    INTEGER      NOT NULL DEFAULT 0, /* 검증 시도 횟수 */
+  expires_at  TIMESTAMPTZ  NOT NULL,        /* 만료 시각 */
+  created_at  TIMESTAMPTZ  NOT NULL DEFAULT NOW() /* 생성 시각 */
+);
+
+CREATE INDEX IF NOT EXISTS idx_email_verifications_expires_at
+  ON email_verifications (expires_at);
 
 COMMIT;
 

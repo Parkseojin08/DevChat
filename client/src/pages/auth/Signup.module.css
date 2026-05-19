@@ -333,6 +333,69 @@
   text-decoration: underline;
 }
 
+/* ===== Verify Step ===== */
+.verifyInfo {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-size: 0.88rem;
+  color: var(--color-text-secondary);
+  line-height: 1.55;
+  margin-bottom: 6px;
+}
+
+.verifyInfo strong {
+  color: var(--color-text-primary);
+  font-weight: 700;
+  word-break: break-all;
+}
+
+.codeInput {
+  text-align: center;
+  letter-spacing: 10px;
+  font-size: 1.4rem;
+  font-weight: 700;
+  font-family: 'Courier New', monospace;
+  padding: 14px;
+}
+
+.codeInput::placeholder {
+  letter-spacing: 4px;
+  font-size: 0.95rem;
+  font-weight: 400;
+  font-family: inherit;
+}
+
+.verifyActions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.linkBtn {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 4px 2px;
+  transition: color var(--transition);
+}
+
+.linkBtn:hover:not(:disabled) {
+  color: var(--color-primary-hover);
+  text-decoration: underline;
+}
+
+.linkBtn:disabled {
+  color: var(--color-text-muted);
+  cursor: not-allowed;
+}
+
 /* ===== Responsive ===== */
 @media (max-width: 479px) {
   .card {

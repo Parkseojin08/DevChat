@@ -3,6 +3,12 @@ import api from './axios';
 // FormData를 그대로 전달 — axios가 Content-Type: multipart/form-data 자동 설정
 export const signUp = (formData) => api.post('/auth/signup', formData);
 
+// 회원가입 1단계 — 이메일 인증 코드 발송 (multipart/form-data, profile_image 동반 가능)
+export const sendEmailCode = (formData) => api.post('/auth/email/send-code', formData);
+
+// 회원가입 2단계 — 인증 코드 검증 + 계정 생성 + 자동 로그인
+export const verifyEmailCode = (data) => api.post('/auth/email/verify', data);
+
 export const login = (data) => api.post('/auth/login', data);
 
 export const logout = () => api.post('/auth/logout');

@@ -1,14 +1,13 @@
 .page {
   min-height: 100vh;
   background: var(--color-bg);
-  padding: 32px 16px;
+  padding: calc(var(--topbar-height) + 32px) 16px 32px;
 }
 
-/* 모바일: 하단 내비 공간 확보 */
+/* 모바일: topbar + 하단 내비 공간 확보 */
 @media (max-width: 767px) {
   .page {
-    padding: 16px 12px;
-    padding-bottom: calc(var(--mobile-nav-height) + 16px);
+    padding: calc(var(--topbar-height) + 16px) 12px calc(var(--mobile-nav-height) + 16px);
   }
 }
 

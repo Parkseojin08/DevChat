@@ -5,7 +5,7 @@
   display: flex;
   justify-content: center;
   gap: 24px;
-  padding: 24px 16px;
+  padding: calc(var(--topbar-height) + 24px) 16px 24px;
   box-sizing: border-box;
   align-items: flex-start;
 }
@@ -15,7 +15,7 @@
   width: var(--home-sidebar);
   flex-shrink: 0;
   position: sticky;
-  top: 24px;
+  top: calc(var(--topbar-height) + 24px);
 }
 
 .sidebarCard {

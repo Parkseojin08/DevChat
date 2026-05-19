@@ -9,10 +9,14 @@ api.interceptors.response.use(
   (res) => res,
   async (err) => {
     const original = err.config;
+    const code = err.response?.data?.error?.code;
 
+    // TOKEN_EXPIRED: 토큰이 만료된 채로 전송됨
+    // UNAUTHENTICATED: maxAge 지나 쿠키가 브라우저에서 삭제됨 → 토큰 자체가 없음
+    // 두 경우 모두 refresh token이 살아있으면 재발급 시도
     if (
       err.response?.status === 401 &&
-      err.response?.data?.error?.code === 'TOKEN_EXPIRED' &&
+      (code === 'TOKEN_EXPIRED' || code === 'UNAUTHENTICATED') &&
       !original._retried &&
       !original.url?.includes('/auth/refresh')
     ) {

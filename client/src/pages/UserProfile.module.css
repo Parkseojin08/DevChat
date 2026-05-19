@@ -1,9 +1,8 @@
 .page {
   min-height: 100vh;
   background: var(--color-bg);
-  padding: 24px 16px 48px;
+  padding: calc(var(--topbar-height) + 24px) 16px calc(var(--mobile-nav-height, 60px) + 24px);
   box-sizing: border-box;
-  padding-bottom: calc(var(--mobile-nav-height, 60px) + 24px);
 }
 
 .inner {

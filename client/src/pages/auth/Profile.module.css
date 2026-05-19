@@ -3,15 +3,14 @@
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding: 40px 16px;
+  padding: calc(var(--topbar-height) + 40px) 16px 40px;
   background: var(--color-bg);
 }
 
-/* 모바일: 하단 내비 공간 확보 */
+/* 모바일: topbar + 하단 내비 공간 확보 */
 @media (max-width: 767px) {
   .page {
-    padding: 16px 12px;
-    padding-bottom: calc(var(--mobile-nav-height) + 16px);
+    padding: calc(var(--topbar-height) + 16px) 12px calc(var(--mobile-nav-height) + 16px);
   }
 }
 
@@ -21,9 +20,9 @@
   align-items: center;
   gap: 5px;
   padding: 6px 14px;
-  border-radius: var(--radius-full);
+  border-radius: 0.5rem;
   font-size: 0.88rem;
-  font-weight: 600;
+  font-weight: bold;
   color: var(--color-text-secondary);
   background: rgba(0, 0, 0, 0.05);
   border: none;

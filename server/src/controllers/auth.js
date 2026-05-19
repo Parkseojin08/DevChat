@@ -9,6 +9,7 @@ const NAME_MAX = 50;
 const PASSWORD_RE = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
 const BIRTH_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 const BIO_MAX = 200;
+const EMAIL_CODE_RE = /^\d{6}$/;
 
 const isProd = () => process.env.NODE_ENV === 'production';
 
@@ -70,6 +71,100 @@ exports.signUp = async (req, res, next) => {
             data: {
                 success: true,
                 message: '회원가입을 성공하였습니다.'
+            }
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
+/**
+ * POST /auth/email/send-code
+ *
+ * 회원가입 정보를 받아 형식 검증 후 service로 위임.
+ * service가 이메일 발송까지 처리 (성공/실패 본문은 service에서 throw).
+ *
+ * multipart/form-data — profile_image 파일 동반 가능 (signUp과 동일).
+ */
+exports.sendEmailCode = async (req, res, next) => {
+    try {
+        const { handle, email, name, password, birth_date } = req.body || {};
+        const profileFile = req.file;
+
+        const errors = [];
+
+        if (!isNonEmptyString(handle) || !HANDLE_RE.test(handle)) {
+            errors.push({ field: 'handle', message: '3~20자의 영문/숫자/_만 사용 가능합니다.' });
+        }
+        if (!isNonEmptyString(email) || !EMAIL_RE.test(email)) {
+            errors.push({ field: 'email', message: '이메일 형식이 올바르지 않습니다.' });
+        }
+        if (!isValidName(name)) {
+            errors.push({ field: 'name', message: '이름은 1~50자여야 합니다.' });
+        }
+        if (!isNonEmptyString(password) || !PASSWORD_RE.test(password)) {
+            errors.push({ field: 'password', message: '비밀번호는 8자 이상이며 영문·숫자·특수문자를 포함해야 합니다.' });
+        }
+        if (!isNonEmptyString(birth_date) || !BIRTH_DATE_RE.test(birth_date)) {
+            errors.push({ field: 'birth_date', message: 'YYYY-MM-DD 형식이어야 합니다.' });
+        }
+
+        if (errors.length > 0) {
+            throw new ValidationError('INVALID_INPUT', '입력 형식이 올바르지 않습니다.', errors);
+        }
+
+        await authService.sendEmailVerification({
+            handle,
+            email,
+            name,
+            password,
+            birth_date,
+            profileFile
+        });
+
+        return res.status(200).json({
+            data: {
+                success: true,
+                message: '인증 코드가 발송되었습니다.'
+            }
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
+/**
+ * POST /auth/email/verify
+ *
+ * email + code 검증 후 계정 생성 + 토큰 쿠키 설정.
+ */
+exports.verifyEmailCode = async (req, res, next) => {
+    try {
+        const { email, code } = req.body || {};
+
+        const errors = [];
+        if (!isNonEmptyString(email) || !EMAIL_RE.test(email)) {
+            errors.push({ field: 'email', message: '이메일 형식이 올바르지 않습니다.' });
+        }
+        if (!isNonEmptyString(code) || !EMAIL_CODE_RE.test(code)) {
+            errors.push({ field: 'code', message: '6자리 숫자 코드를 입력해주세요.' });
+        }
+
+        if (errors.length > 0) {
+            throw new ValidationError('INVALID_INPUT', '입력 형식이 올바르지 않습니다.', errors);
+        }
+
+        const { user, accessToken, refreshToken } =
+            await authService.verifyEmailAndCreateAccount({ email, code });
+
+        res.cookie('accessToken', accessToken, accessCookieOptions());
+        res.cookie('refreshToken', refreshToken, refreshCookieOptions());
+
+        return res.status(201).json({
+            data: {
+                success: true,
+                message: '회원가입이 완료되었습니다.',
+                user
             }
         });
     } catch (err) {

@@ -58,6 +58,7 @@
 
   /* ===== Spacing ===== */
   --mobile-nav-height: 56px;
+  --topbar-height: 52px;
 }
 
 /* 다크 모드 대비: 시스템이 dark를 선호해도 현재는 라이트 고정 */

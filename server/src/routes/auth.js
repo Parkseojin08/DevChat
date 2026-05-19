@@ -7,8 +7,15 @@ const { upload, wrapUpload } = require('../middlewares/upload');
 // profile_image 파일 필드(선택) 단일 업로드 미들웨어
 const uploadProfileImage = wrapUpload(upload.single('profile_image'));
 
-// 회원가입 (multipart/form-data)
+// 회원가입 (multipart/form-data) — 레거시: 이메일 인증 없이 즉시 생성
+// 신규 흐름은 /auth/email/send-code → /auth/email/verify 를 사용
 routes.post('/signup', uploadProfileImage, controllers.signUp);
+
+// 회원가입 1단계: 이메일 인증 코드 발송 (multipart/form-data)
+routes.post('/email/send-code', uploadProfileImage, controllers.sendEmailCode);
+
+// 회원가입 2단계: 인증 코드 검증 + 계정 생성 + 자동 로그인 (application/json)
+routes.post('/email/verify', controllers.verifyEmailCode);
 
 // 로그인
 routes.post('/login', controllers.signIn);

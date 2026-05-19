@@ -1,7 +1,8 @@
 /* ===== 전체 레이아웃 ===== */
 .page {
   display: flex;
-  height: 100vh;
+  height: calc(100vh - var(--topbar-height));
+  margin-top: var(--topbar-height);
   overflow: hidden;
   background: var(--color-bg);
 }
