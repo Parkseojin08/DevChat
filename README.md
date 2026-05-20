@@ -4,37 +4,8 @@
 [![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white)](https://react.dev/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15+-4169E1?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![Socket.io](https://img.shields.io/badge/Socket.io-4.x-010101?logo=socket.io&logoColor=white)](https://socket.io/)
-[![License](https://img.shields.io/badge/License-MIT-blue.svg)](#license)
 
 **DevChat** 은 페이스북 형식의 SNS 와 페이스북 메신저 형식의 실시간 채팅을 한 서비스로 통합한 학습용 풀스택 웹 애플리케이션입니다. 게시글·댓글·좋아요·친구 관계 같은 SNS 핵심 기능과, Socket.io 기반 실시간 1:1 / 그룹 채팅, 그리고 사용자 활동을 추적하는 알림 시스템을 하나의 일관된 아키텍처 위에 구현했습니다. JWT + HttpOnly 쿠키 기반 인증, 이메일 인증 가입 흐름, 계층 분리(Controller / Service / Repository) 백엔드 구조, PostgreSQL 의 CASCADE 제약과 ENUM 타입을 적극 활용한 데이터 모델링을 통해 실제 서비스 수준의 설계 원칙을 적용하는 것을 목표로 합니다.
-
----
-
-## Web Image
-
-### signup
-<img width="601" height="780" alt="Image" src="https://github.com/user-attachments/assets/a840f15d-594b-4b57-911d-3633b3a844a5" />
-
-### login
-<img width="604" height="606" alt="Image" src="https://github.com/user-attachments/assets/d6f58105-7605-4220-8f31-67c0bdf6e327" />
-
-### profile_update
-<img width="535" height="923" alt="image" src="https://github.com/user-attachments/assets/0dcc5e3f-09d2-429a-9ee9-96be466be647" />
-
-### main page (friend feed and my feed)
-<img width="1128" height="946" alt="Image" src="https://github.com/user-attachments/assets/44c4339a-636c-4bff-a790-10bd89592c7d" />
-
-### random feed
-<img width="1096" height="943" alt="image" src="https://github.com/user-attachments/assets/632e22ca-47cf-481e-ad75-9c6a1525b1c0" />
-
-### user feed (Detailed inquiry)
-<img width="713" height="928" alt="image" src="https://github.com/user-attachments/assets/e43d67b5-ef1f-422c-82d6-7ffaeed020a7" />
-
-### messenger
-<img width="1917" height="946" alt="image" src="https://github.com/user-attachments/assets/e9b6382f-09f7-4fa8-9297-2b230142b389" />
-
-### friend search
-<img width="713" height="904" alt="image" src="https://github.com/user-attachments/assets/cdaa8dee-9bf9-475b-8a64-0ee3960f0fbb" />
 
 ---
 
@@ -45,10 +16,10 @@
 - [아키텍처](#아키텍처)
 - [디렉토리 구조](#디렉토리-구조)
 - [시작하기](#시작하기)
+- [사용방법](#사용방법)
 - [API 개요](#api-개요)
 - [Socket.io 이벤트](#socketio-이벤트)
 - [보안 설계](#보안-설계)
-- [License](#license)
 
 ---
 
@@ -121,7 +92,7 @@
 | Auth | JWT (jsonwebtoken) + HttpOnly Cookie |
 | Password | bcrypt |
 | File Upload | multer |
-| Mailer | nodemailer (SMTP) |
+| Mailer | nodemailer (Gmail SMTP) |
 | Env | dotenv |
 
 ### Database
@@ -287,7 +258,7 @@ projectDevChat/
 - **Node.js** 18 이상
 - **PostgreSQL** 15 이상
 - **npm** (또는 yarn)
-- **SMTP 계정** — 이메일 인증 발송용 (Gmail 앱 비밀번호 권장)
+- **Gmail 계정** — 이메일 인증 발송용 (앱 비밀번호 필요)
 
 ### 1. 저장소 클론
 
@@ -299,7 +270,7 @@ cd DevChat
 ### 2. PostgreSQL 데이터베이스 준비
 
 ```sql
--- psql 또는 pgAdmin 등에서
+-- psql 또는 pgAdmin 에서 실행
 CREATE DATABASE devchat;
 ```
 
@@ -307,9 +278,7 @@ CREATE DATABASE devchat;
 
 - ENUM: `friend_status`, `room_type_status`, `notification_type`
 - 테이블: `users` → `friendships` → `posts` → `posts_media` → `comments` → `likes` → `chat_rooms` → `messages` → `room_members` → `notifications`
-- 추가 인덱스: `idx_notifications_user_recent`, `idx_notifications_user_unread` (부분 인덱스)
-
-> 이메일 인증을 위해 `email_verifications` 테이블 (email, code, payload(JSONB), expires_at, attempts) 도 함께 생성합니다.
+- 이메일 인증용: `email_verifications` (migration 파일: `server/src/db/migrations/002_email_verifications.sql`)
 
 ### 3. 환경 변수 설정
 
@@ -332,17 +301,13 @@ PG_PORT=5432
 JWT_SECRET=replace_with_strong_random_string
 JWT_REFRESH_SECRET=replace_with_another_strong_random_string
 
-# SMTP (이메일 인증)
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=465
-SMTP_SECURE=true
+# SMTP (이메일 인증) — Gmail 앱 비밀번호 사용
+# Google 계정 → 보안 → 2단계 인증 → 앱 비밀번호 생성
 SMTP_USER=your_gmail@gmail.com
 SMTP_PASS=your_app_password
-SMTP_FROM_NAME=DevChat
 ```
 
-> **주의** — `.env` 는 절대 커밋하지 마세요. `.gitignore` 에 포함되어야 합니다.
-> Gmail 사용 시: Google 계정 → 2단계 인증 활성화 → 앱 비밀번호 생성 후 `SMTP_PASS` 에 입력.
+> `.env` 는 절대 커밋하지 마세요. `.gitignore` 에 포함되어야 합니다.
 
 ### 4. 의존성 설치 & 실행
 
@@ -350,22 +315,62 @@ SMTP_FROM_NAME=DevChat
 # Backend
 cd server
 npm install
-npm start                 # http://localhost:5000
+npm start           # http://localhost:5000
 
 # Frontend (별도 터미널)
 cd client
 npm install
-npm start                 # http://localhost:3000
+npm start           # http://localhost:3000
 ```
 
-브라우저에서 `http://localhost:3000` 으로 접속.
+브라우저에서 `http://localhost:3000` 으로 접속합니다.
 
 ### 5. 빌드 (프로덕션)
 
 ```bash
 cd client
-npm run build             # client/build/ 생성
+npm run build       # client/build/ 생성
 ```
+
+---
+
+## 사용방법
+
+### 회원가입
+
+1. `/signup` 페이지에서 아이디(handle), 이메일, 이름, 비밀번호, 생년월일을 입력합니다.
+2. 선택적으로 프로필 이미지를 첨부할 수 있습니다.
+3. **인증 코드 발송** 버튼을 누르면 입력한 이메일로 6자리 코드가 발송됩니다.
+4. 코드를 입력해 검증하면 계정이 생성되고 자동으로 로그인됩니다.
+5. 코드는 **10분간 유효**하며, 60초 쿨다운 후 재발송 가능합니다.
+
+### 피드 (SNS)
+
+- 홈 화면 상단 입력란에서 게시글을 작성합니다. 이미지는 최대 5장 첨부 가능합니다.
+- **뉴스피드** 탭: 본인과 친구의 게시글이 최신순으로 표시됩니다.
+- **탐색** 탭: 친구가 아닌 다른 사용자의 게시글을 무작위로 탐색합니다.
+- 게시글에 댓글을 달거나, 댓글에 대댓글을 달 수 있습니다.
+- 하트(좋아요) 버튼으로 반응을 남길 수 있습니다.
+
+### 친구
+
+- 상단 검색 또는 친구 관리 페이지에서 handle로 사용자를 검색합니다.
+- 친구 신청을 보내면 상대방이 수락/거절할 수 있습니다.
+- 수락된 친구는 뉴스피드에 게시글이 표시되고 DM을 보낼 수 있습니다.
+
+### 메신저
+
+- 하단 네비게이션의 메신저 아이콘으로 이동합니다.
+- 채팅 목록에서 기존 채팅방을 선택하거나, **+** 버튼으로 새 채팅방을 만듭니다.
+- 1:1 채팅: 친구 목록에서 상대방을 선택합니다.
+- 그룹 채팅: 여러 명을 선택해 방을 만들고 이름을 지정합니다.
+- 이미지 첨부 버튼으로 사진을 전송할 수 있습니다.
+- 내 메시지를 길게 누르면 삭제할 수 있습니다.
+
+### 프로필
+
+- 우측 하단 프로필 아이콘 → **프로필 편집** 에서 이름, 소개글, 프로필 이미지를 변경합니다.
+- 다른 사용자의 이름이나 프로필을 클릭하면 해당 사용자의 공개 프로필 페이지로 이동합니다.
 
 ---
 
@@ -379,7 +384,6 @@ npm run build             # client/build/ 생성
 |---|---|---|---|
 | POST | `/auth/email/send-code` | – | 회원가입 1단계: 이메일 인증 코드 발송 |
 | POST | `/auth/email/verify` | – | 회원가입 2단계: 코드 검증 + 계정 생성 + 자동 로그인 |
-| POST | `/auth/signup` | – | 레거시: 이메일 인증 없이 즉시 가입 |
 | POST | `/auth/login` | – | 로그인 (쿠키 발급) |
 | POST | `/auth/logout` | required | 로그아웃 (쿠키 제거 + refresh token 무효화) |
 | POST | `/auth/refresh` | refresh cookie | Access token 재발급 (회전) |
@@ -476,33 +480,3 @@ Socket.io 는 쿠키의 `accessToken` 으로 인증되며, 연결 시 사용자�
 | **CASCADE** | 회원 탈퇴 시 작성한 모든 데이터 자동 정리 |
 | **시크릿** | 하드코딩 금지 → `.env` 로 분리 |
 | **파일 업로드** | `multer` 로 타입·크기 제한, `uploads/` 디렉토리만 정적 서빙 |
-
----
-
-## License
-
-This project is licensed under the **MIT License**. See below.
-
-```
-MIT License
-
-Copyright (c) 2026 DevChat Contributors
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
