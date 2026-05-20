@@ -207,7 +207,9 @@ export default function ChatRoom({ roomId, room, onNameChange }) {
       onMessageReceive((msg) => {
         if (msg.room_id !== roomId) return;
         setMessages((prev) => {
-          if (prev.some((m) => m.id === msg.id)) return prev;
+          // socket의 msg.id는 string(`String(message.id)`), 초기 fetch의 m.id는 number이므로
+          // 비교 전에 양쪽 모두 string으로 정규화 (중복 추가 방지)
+          if (prev.some((m) => String(m.id) === String(msg.id))) return prev;
           const el = listRef.current;
           if (el) {
             shouldAutoScroll.current =
@@ -228,7 +230,9 @@ export default function ChatRoom({ roomId, room, onNameChange }) {
         if (evt.room_id !== roomId) return;
         setMessages((prev) =>
           prev.map((m) =>
-            m.id === evt.message_id
+            // evt.message_id는 String(messageId)로 발신, m.id는 fetch 결과는 number /
+            // socket 수신은 string 혼재 가능 → string 비교로 통일
+            String(m.id) === String(evt.message_id)
               ? { ...m, is_deleted: true, content: '삭제된 메시지입니다' }
               : m
           )
